@@ -213,54 +213,24 @@
           <div class="d-flex align-items-center justify-content-between mb-3">
             <div class="d-flex align-items-center gap-2">
               <span class="badge bg-success text-white fw-bold">STEP 4</span>
-              <h4 class="text-light fw-bold mb-0">EasyPaisa Payment</h4>
+              <h4 class="text-light fw-bold mb-0">Payment Method</h4>
             </div>
             <span class="badge bg-success text-white px-2 py-1">Official EasyPaisa</span>
           </div>
 
-          <!-- Instructions -->
-          <div class="alert alert-dark bg-dark bg-opacity-75 border-success border-opacity-50 text-light small mb-4">
-            <i class="bi bi-info-circle-fill text-success me-1"></i>
-            Please send the exact package amount (<b class="text-success" id="easypaisa-pay-amount">Rs. {{ initial_price|floatformat:0 }}</b>) to the following EasyPaisa number:
+          <div class="p-3 rounded-3 bg-dark border border-success mb-3 text-center">
+            <small class="text-secondary d-block mb-1">Official Receiver EasyPaisa Account</small>
+            <div class="easypaisa-number-display mb-1 text-success fw-bold font-monospace fs-4">03454524086</div>
+            <div class="text-light small">Account Title: <b>Mehran WiFi Service</b></div>
           </div>
 
-          <!-- Highlighted Number with 1-Click Copy -->
-          <div class="text-center p-3 rounded-3 bg-dark border border-success mb-4 position-relative">
-            <small class="text-secondary d-block mb-1">EasyPaisa Account Number</small>
-            <div class="easypaisa-number-display mb-2">{{ EASYPAISA_NUMBER }}</div>
-            <small class="text-light opacity-75 d-block mb-2">Account Title: <b>{{ EASYPAISA_ACCOUNT_NAME }}</b></small>
-            <button type="button" onclick="copyEasyPaisaNumber('{{ EASYPAISA_NUMBER }}', this)" class="btn btn-sm btn-outline-success">
-              <i class="bi bi-clipboard me-1"></i> Copy EasyPaisa Number
-            </button>
+          <div class="alert alert-dark bg-dark bg-opacity-75 border-secondary border-opacity-25 text-secondary small mb-4">
+            <i class="bi bi-shield-check text-cyan me-1"></i>
+            Clicking below will transfer you to the secure <b>EasyPaisa Gateway</b> page with complete payment instructions. After transferring, you will submit your TRX ID to activate your package.
           </div>
 
-          <!-- Payment Verification Form Inputs -->
-          <div class="mb-3">
-            <label class="form-label text-light">Sender EasyPaisa Mobile Number</label>
-            <input type="text" name="sender_number" class="form-control" placeholder="03XXXXXXXXX (Number sent from)" required value="{{ user.profile.phone_number|default:'' }}">
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label text-light">EasyPaisa Transaction ID (TRX ID) *</label>
-            <input type="text" name="transaction_id" class="form-control font-monospace" placeholder="e.g. 7894561230" required>
-            <small class="text-muted">Enter the transaction ID received from EasyPaisa SMS (3737).</small>
-          </div>
-
-          <div class="mb-4">
-            <label class="form-label text-light">Payment Screenshot (Optional / Recommended)</label>
-            <input type="file" name="payment_screenshot" class="form-control" accept="image/*">
-            <small class="text-muted">Upload screenshot of the EasyPaisa confirmation screen.</small>
-          </div>
-
-          <div class="form-check mb-4">
-            <input class="form-check-input" type="checkbox" id="paymentConfirmCheck" required>
-            <label class="form-check-label text-secondary small" for="paymentConfirmCheck">
-              I confirm that I have transferred the exact package amount via EasyPaisa to <b>{{ EASYPAISA_NUMBER }}</b>.
-            </label>
-          </div>
-
-          <button type="submit" class="btn btn-easypaisa w-100 py-3 fs-5">
-            <i class="bi bi-shield-check me-2"></i> Confirm Payment &amp; Submit
+          <button type="submit" class="btn btn-easypaisa w-100 py-3 fs-5 shadow">
+            <i class="bi bi-wallet2 me-2"></i> Proceed to EasyPaisa Gateway <i class="bi bi-arrow-right ms-1"></i>
           </button>
         </div>
       </div>

@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}EasyPaisa Payment Gateway | Mehran WiFi Service{% endblock %}
+
+{% block content %}
+<div class="position-relative min-vh-80 d-flex align-items-center py-5">
+  <canvas id="fiber-canvas"></canvas>
+
+  <div class="container position-relative z-2">
+    <!-- Breadcrumb / Step Indicator -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-8 col-lg-7 text-center">
+        <div class="hero-tag mb-2">
+          <span class="dot-beacon-green"></span>
+          <span>Official EasyPaisa Payment Gateway</span>
+        </div>
+        <h1 class="display-6 fw-bold text-light mb-2">
+          Complete Your <span class="text-success">EasyPaisa Transfer</span>
+        </h1>
+        <p class="text-secondary small">
+          Transfer the exact package amount to the official Mehran WiFi Service account below.
+        </p>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <!-- Main EasyPaisa Gateway Card -->
+        <div class="glass-panel p-4 p-md-5 border-success anim-fiber-glow" style="border-width: 2px;">
+          <!-- Top Gateway Header -->
+          <div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom border-secondary border-opacity-25">
+            <div class="d-flex align-items-center gap-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 46px; height: 46px; background: rgba(0, 168, 89, 0.2); border: 1.5px solid #00a859;">
+                <i class="bi bi-wallet2 text-success fs-4"></i>
+              </div>
+              <div>
+                <h5 class="text-light fw-bold mb-0">EasyPaisa Gateway</h5>
+                <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-25 small">Verified Account</span>
+              </div>
+            </div>
+            <div class="text-end">
+              <span class="text-secondary small d-block">Payable Amount</span>
+              <span class="text-success fw-bold fs-4 font-monospace">Rs. {{ amount|floatformat:0 }}</span>
+            </div>
+          </div>
+
+          <!-- Official Receiver Box -->
+          <div class="text-center p-4 rounded-3 bg-dark bg-opacity-75 border border-success mb-4 position-relative">
+            <span class="badge bg-success text-white px-3 py-1 mb-2">SEND PAYMENT TO</span>
+            <div class="easypaisa-number-display mb-1 text-success fw-bold font-monospace fs-2" id="gateway-easypaisa-num">
+              {{ easypaisa_number }}
+            </div>
+            <div class="text-light fs-5 mb-3">
+              Account Title: <b class="text-cyan">{{ easypaisa_account_name }}</b>
+            </div>
+
+            <button type="button" onclick="copyGatewayNumber('{{ easypaisa_number }}', this)" class="btn btn-outline-success px-4 py-2">
+              <i class="bi bi-clipboard me-2"></i> Copy EasyPaisa Number
+            </button>
+          </div>
+
+          <!-- Subscription Order Summary -->
+          <div class="p-3 rounded-3 bg-dark bg-opacity-50 border border-secondary border-opacity-25 mb-4 small">
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary border-opacity-10">
+              <span class="text-secondary">Selected Package:</span>
+              <span class="text-light fw-bold">{{ pkg_name }}</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary border-opacity-10">
+              <span class="text-secondary">Bandwidth Speed:</span>
+              <span class="text-cyan fw-bold font-monospace">{{ speed }} Mbps Fiber</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Billing Expiry Date:</span>
+              <span class="text-warning fw-bold font-monospace">{{ subscription.expiry_date|date:"F 08, Y" }}</span>
+            </div>
+          </div>
+
+          <!-- Step-by-Step Instructions -->
+          <div class="alert alert-dark bg-dark bg-opacity-50 border-secondary border-opacity-25 p-3 mb-4 small">
+            <h6 class="text-light fw-bold mb-2"><i class="bi bi-info-circle-fill text-cyan me-1"></i> 3 Quick Steps:</h6>
+            <ol class="text-secondary mb-0 ps-3">
+              <li class="mb-1">Open <b>EasyPaisa App</b> or dial <b>*786#</b>.</li>
+              <li class="mb-1">Send <b>Rs. {{ amount|floatformat:0 }}</b> to <b>{{ easypaisa_number }}</b> (<span class="text-light">{{ easypaisa_account_name }}</span>).</li>
+              <li>Keep the <b>Transaction ID (TRX ID)</b> from SMS and capture a screenshot.</li>
+            </ol>
+          </div>
+
+          <!-- Action Button to return and activate -->
+          <div class="d-grid gap-2">
+            <a href="{% url 'activate_package' subscription.id %}" class="btn btn-easypaisa py-3 fs-5 shadow">
+              <i class="bi bi-check-circle-fill me-2"></i> Payment Completed &rarr; Activate Package
+            </a>
+            <a href="{% url 'order_package' %}" class="btn btn-outline-secondary py-2 small">
+              <i class="bi bi-arrow-left me-1"></i> Back to Package Selection
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/fiber-canvas.js' %}"></script>
+<script>
+function copyGatewayNumber(number, btn) {
+  navigator.clipboard.writeText(number).then(() => {
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = '<i class="bi bi-check-all me-1"></i> Copied!';
+    btn.classList.remove('btn-outline-success');
+    btn.classList.add('btn-success');
+    setTimeout(() => {
+      btn.innerHTML = originalHtml;
+      btn.classList.remove('btn-success');
+      btn.classList.add('btn-outline-success');
+    }, 2500);
+  });
+}
+</script>
+{% endblock %}

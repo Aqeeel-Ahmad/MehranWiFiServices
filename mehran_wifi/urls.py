@@ -11,6 +11,7 @@ admin.site.index_title = "Fiber ISP Infrastructure & Subscriber Management"
 from apps.accounts import views as account_views
 from apps.payments import views as payment_views
 from apps.core import views as core_views
+from allauth.account import views as allauth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,14 +24,14 @@ urlpatterns = [
     path('contact/', core_views.contact_view, name='contact'),
 
     # Direct User Auth & Dashboard Routes
-    path('login/', account_views.login_view, name='login'),
-    path('register/', account_views.register_view, name='register'),
-    path('logout/', account_views.logout_view, name='logout'),
+    path('login/', allauth_views.LoginView.as_view(), name='login'),
+    path('register/', allauth_views.SignupView.as_view(), name='register'),
+    path('logout/', allauth_views.LogoutView.as_view(), name='logout'),
     path('dashboard/', account_views.dashboard_view, name='dashboard'),
     path('profile/', account_views.profile_view, name='profile'),
 
-    # App Namespaces
-    path('accounts/', include('apps.accounts.urls')),
+    # Allauth and App Namespaces
+    path('accounts/', include('allauth.urls')),
     path('payments/', include('apps.payments.urls')),
     path('complaints/', include('apps.complaints.urls')),
     path('notifications/', include('apps.notifications.urls')),

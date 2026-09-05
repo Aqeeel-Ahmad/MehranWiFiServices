@@ -16,13 +16,18 @@
   <!-- Verification Alert Message if Pending -->
   {% if payment.verification_status == 'pending' %}
     <div class="max-w-720 mx-auto mb-4">
-      <div class="alert alert-warning d-flex align-items-center gap-3 p-3 rounded-3 shadow border-warning">
-        <i class="bi bi-hourglass-split fs-2 text-warning"></i>
-        <div>
-          <h5 class="fw-bold mb-1">Your payment is under verification. Please wait.</h5>
-          <p class="mb-0 small">
-            Your internet package will be activated shortly. Our NOC team verifies EasyPaisa transactions immediately upon receipt.
+      <div class="alert alert-warning d-flex align-items-center gap-3 p-4 rounded-3 shadow border-warning anim-fiber-glow" style="background: rgba(245, 158, 11, 0.15); border-width: 2px;">
+        <div class="spinner-grow text-warning flex-shrink-0" style="width: 2.5rem; height: 2.5rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="flex-grow-1">
+          <h4 class="fw-bold mb-1 text-warning">Your package is being activated. Please wait.</h4>
+          <p class="mb-2 text-light small">
+            We have recorded your EasyPaisa payment submission (TRX: <b class="font-monospace text-warning">{{ payment.transaction_id }}</b>). Our NOC team is verifying your transaction and activating your fiber internet line.
           </p>
+          <a href="{{ admin_wa_url }}" target="_blank" class="btn btn-sm btn-success text-white px-3 py-1 shadow-sm">
+            <i class="bi bi-whatsapp me-1"></i> Share Proof with Admin on WhatsApp (03454524086)
+          </a>
         </div>
       </div>
     </div>
@@ -163,14 +168,19 @@
   <!-- Action Buttons: PDF, WhatsApp, Email -->
   <div class="max-w-720 mx-auto">
     <div class="glass-panel p-3 d-flex flex-wrap gap-2 justify-content-center">
+      <!-- Direct Share Proof with Admin WhatsApp -->
+      <a href="{{ admin_wa_url }}" target="_blank" class="btn btn-success px-3 py-2 text-white fw-bold shadow">
+        <i class="bi bi-whatsapp me-1"></i> Send Proof to Admin WhatsApp (03454524086)
+      </a>
+
       <!-- Download PDF -->
       <a href="{% url 'download_receipt_pdf' payment.id %}" class="btn btn-fiber-primary px-3 py-2">
         <i class="bi bi-file-earmark-pdf-fill me-1"></i> Download Receipt as PDF
       </a>
 
       <!-- Send to WhatsApp -->
-      <a href="{{ wa_url }}" target="_blank" class="btn btn-success px-3 py-2 text-white">
-        <i class="bi bi-whatsapp me-1"></i> Send to WhatsApp
+      <a href="{{ wa_url }}" target="_blank" class="btn btn-outline-success px-3 py-2 text-white">
+        <i class="bi bi-share me-1"></i> Share Receipt
       </a>
 
       <!-- Send to Email -->

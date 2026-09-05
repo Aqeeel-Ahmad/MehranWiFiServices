@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Activate Package | Mehran WiFi Service{% endblock %}
+
+{% block content %}
+<div class="position-relative min-vh-80 d-flex align-items-center py-5">
+  <canvas id="fiber-canvas"></canvas>
+
+  <div class="container position-relative z-2">
+    <!-- Header -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-8 col-lg-7 text-center">
+        <div class="hero-tag mb-2">
+          <span class="dot-beacon-green"></span>
+          <span>Package Activation Verification</span>
+        </div>
+        <h1 class="display-6 fw-bold text-light mb-2">
+          Activate Your <span class="text-gradient-fiber">Internet Package</span>
+        </h1>
+        <p class="text-secondary small">
+          Enter your EasyPaisa Transaction ID (TRX ID) and attach payment proof for verification.
+        </p>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="glass-panel p-4 p-md-5 border-cyan anim-fiber-glow">
+          <!-- Package Snapshot Badge -->
+          <div class="d-flex align-items-center justify-content-between p-3 rounded-3 bg-dark bg-opacity-75 border border-secondary border-opacity-25 mb-4">
+            <div>
+              <span class="text-secondary small d-block">Subscribing To:</span>
+              <h5 class="text-light fw-bold mb-0">{{ pkg_name }}</h5>
+              <span class="text-cyan small font-monospace"><i class="bi bi-speedometer2 me-1"></i>{{ speed }} Mbps Optical Fiber</span>
+            </div>
+            <div class="text-end">
+              <span class="text-secondary small d-block">Amount Transferred</span>
+              <span class="text-success fw-bold fs-4 font-monospace">Rs. {{ amount|floatformat:0 }}</span>
+            </div>
+          </div>
+
+          <!-- Activation Form -->
+          <form method="POST" action="{% url 'activate_package' subscription.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label text-light">Sender EasyPaisa Mobile Number *</label>
+              <div class="input-group">
+                <span class="input-group-text bg-dark border-secondary border-opacity-25 text-secondary"><i class="bi bi-telephone-fill"></i></span>
+                <input type="text" name="sender_number" class="form-control" placeholder="03XXXXXXXXX (Mobile number sent from)" required value="{{ default_sender_number }}">
+              </div>
+              <small class="text-muted">The EasyPaisa mobile account you sent money from.</small>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label text-light">EasyPaisa Transaction ID (TRX ID) *</label>
+              <div class="input-group">
+                <span class="input-group-text bg-dark border-secondary border-opacity-25 text-secondary"><i class="bi bi-hash"></i></span>
+                <input type="text" name="transaction_id" class="form-control font-monospace" placeholder="e.g. 7894561230" required autofocus>
+              </div>
+              <small class="text-muted">Found in the confirmation SMS sent by <b>3737</b>.</small>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label text-light">Upload Payment Proof / Screenshot (Recommended)</label>
+              <div class="input-group">
+                <span class="input-group-text bg-dark border-secondary border-opacity-25 text-secondary"><i class="bi bi-image"></i></span>
+                <input type="file" name="payment_screenshot" class="form-control" accept="image/*">
+              </div>
+              <small class="text-muted">Attach screenshot from EasyPaisa App or receipt SMS for speediest verification.</small>
+            </div>
+
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="checkbox" id="activateConfirmCheck" required checked>
+              <label class="form-check-label text-secondary small" for="activateConfirmCheck">
+                I confirm that I have sent <b>Rs. {{ amount|floatformat:0 }}</b> to EasyPaisa <b>{{ easypaisa_number }}</b> ({{ easypaisa_account_name }}).
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-fiber-primary w-100 py-3 fs-5 mb-3 shadow">
+              <i class="bi bi-shield-check me-2"></i> Submit Proof &amp; Activate Package
+            </button>
+
+            <div class="text-center">
+              <a href="{% url 'easypaisa_gateway' subscription.id %}" class="text-secondary small text-decoration-none">
+                <i class="bi bi-arrow-left me-1"></i> Back to EasyPaisa Gateway Screen
+              </a>
+            </div>
+          </form>
+        </div>
+
+        <!-- NOC Hotline Note -->
+        <div class="mt-3 p-3 rounded-3 bg-dark bg-opacity-75 border border-secondary border-opacity-25 text-center small text-secondary">
+          <i class="bi bi-headset text-cyan me-1"></i> Need urgent activation assistance? WhatsApp our NOC team at <b class="text-light">03454524086</b>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/fiber-canvas.js' %}"></script>
+{% endblock %}

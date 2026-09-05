@@ -68,10 +68,6 @@ def order_package_wizard_view(request):
         package = get_object_or_404(InternetPackage, id=package_id)
         expiry_date = calculate_expiry_date(p_date)
 
-        if not transaction_id:
-            messages.error(request, "Please enter your EasyPaisa Transaction ID (TRX ID).")
-            return redirect('order_package')
-
         # Custom Speed calculation if package is custom
         if package.is_custom:
             try:
@@ -98,30 +94,31 @@ def order_package_wizard_view(request):
             status='pending'
         )
 
-        # Create Payment Record
-        payment = Payment.objects.create(
-            user=request.user,
-            subscription=subscription,
-            amount=pkg_price,
-            payment_method='EasyPaisa',
-            easypaisa_number='03454524086',
-            sender_number=sender_number or getattr(request.user.profile, 'phone_number', ''),
-            transaction_id=transaction_id,
-            payment_screenshot=screenshot,
-            payment_date=timezone.now(),
-            verification_status='pending'
-        )
+        # If transaction_id is provided directly, process payment, else redirect to gateway
+        if transaction_id:
+            payment = Payment.objects.create(
+                user=request.user,
+                subscription=subscription,
+                amount=pkg_price,
+                payment_method='EasyPaisa',
+                easypaisa_number='03454524086',
+                sender_number=sender_number or getattr(request.user.profile, 'phone_number', ''),
+                transaction_id=transaction_id,
+                payment_screenshot=screenshot,
+                payment_date=timezone.now(),
+                verification_status='pending'
+            )
+            Notification.objects.create(
+                user=request.user,
+                title="🟡 Payment Under Verification",
+                message=f"We have received your payment request for {pkg_name} (TRX: {transaction_id}). Your package is being activated. Please wait.",
+                link=f"/payments/receipt/{payment.id}/"
+            )
+            messages.info(request, "Your package is being activated. Please wait.")
+            return redirect('view_receipt', payment_id=payment.id)
 
-        # Create In-App Notification
-        Notification.objects.create(
-            user=request.user,
-            title="🟡 Payment Under Verification",
-            message=f"We have received your payment request for {pkg_name} (TRX: {transaction_id}). Our NOC team is verifying it and your package will be activated shortly.",
-            link=f"/payments/receipt/{payment.id}/"
-        )
-
-        messages.info(request, "Your payment is under verification. Please wait. Your internet package will be activated shortly.")
-        return redirect('view_receipt', payment_id=payment.id)
+        # Redirect to dedicated EasyPaisa Gateway page
+        return redirect('easypaisa_gateway', subscription_id=subscription.id)
 
     context = {
         'packages': packages,
