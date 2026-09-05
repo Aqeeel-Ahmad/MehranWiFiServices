@@ -101,6 +101,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT.mkdir(parents=True, exist_ok=True)
+
+# Enable WhiteNoise finders so all static assets are served reliably in serverless environments
+WHITENOISE_USE_FINDERS = True
 
 STORAGES = {
     "default": {

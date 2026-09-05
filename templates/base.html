@@ -24,6 +24,15 @@
     })();
   </script>
 
+  <style>
+    /* Critical navbar fallback styles to prevent FOUC */
+    .navbar-logo-img { height: 44px; width: auto; }
+    [data-theme="light"] .logo-dark-mode,
+    [data-theme="light"] .theme-icon-light { display: none !important; }
+    [data-theme="dark"] .logo-light-mode,
+    [data-theme="dark"] .theme-icon-dark { display: none !important; }
+  </style>
+
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -33,8 +42,8 @@
     <div class="container">
       <!-- Left Side: Logo & Website Name (Theme Aware) -->
       <a class="navbar-brand navbar-brand-container" href="{% url 'home' %}">
-        <img src="{% static 'images/logo-light.svg' %}" alt="Mehran WiFi Service" class="navbar-logo-img logo-light-mode">
-        <img src="{% static 'images/logo-dark.svg' %}" alt="Mehran WiFi Service" class="navbar-logo-img logo-dark-mode">
+        <img src="{% static 'images/logo-light.svg' %}" alt="Mehran WiFi Service" class="navbar-logo-img logo-light-mode" height="44">
+        <img src="{% static 'images/logo-dark.svg' %}" alt="Mehran WiFi Service" class="navbar-logo-img logo-dark-mode" height="44" style="display: none;">
       </a>
 
       <!-- Mobile Hamburger Button -->
