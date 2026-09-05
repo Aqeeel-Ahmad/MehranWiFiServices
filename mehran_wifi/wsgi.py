@@ -17,16 +17,10 @@ sys.path.insert(0, str(BASE_DIR))
 
 from django.core.wsgi import get_wsgi_application
 
-import traceback
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mehran_wifi.settings')
 
-try:
-    application = get_wsgi_application()
-    app = application
-except Exception as e:
-    print(f"Error initializing Django WSGI application: {e}", file=sys.stderr)
-    traceback.print_exc()
-    raise
+application = get_wsgi_application()
+app = application
+
 
 
