@@ -176,11 +176,11 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
 
 # Django Allauth Configuration
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_LOGIN_METHODS = {'username', 'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_LOGIN_ON_SIGNUP = True
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_REDIRECT_URL = 'dashboard'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'home'

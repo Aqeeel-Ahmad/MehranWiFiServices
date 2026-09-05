@@ -79,7 +79,7 @@
 
             <div class="text-center text-secondary small border-top border-secondary border-opacity-25 pt-3">
               Don't have an account yet?<br/>
-              <a href="{% url 'account_signup' %}" class="text-cyan fw-bold text-decoration-none fs-6">
+              <a href="{% url 'account_signup' %}{% if redirect_field_value %}?{{ redirect_field_name }}={{ redirect_field_value }}{% endif %}" class="text-cyan fw-bold text-decoration-none fs-6">
                 Create a New Customer Account <i class="bi bi-arrow-right"></i>
               </a>
             </div>

@@ -20,8 +20,9 @@ class UserProfile(models.Model):
         return full if full else self.user.username
 
 
+from allauth.account.models import EmailAddress
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.get_or_create(user=instance)
-

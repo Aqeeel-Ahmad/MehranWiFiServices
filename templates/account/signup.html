@@ -87,7 +87,7 @@
 
             <div class="text-center text-secondary small border-top border-secondary border-opacity-25 pt-3">
               Already have an account?<br/>
-              <a href="{% url 'account_login' %}" class="text-cyan fw-bold text-decoration-none fs-6">
+              <a href="{% url 'account_login' %}{% if redirect_field_value %}?{{ redirect_field_name }}={{ redirect_field_value }}{% endif %}" class="text-cyan fw-bold text-decoration-none fs-6">
                 Log In to Existing Account <i class="bi bi-arrow-right"></i>
               </a>
             </div>
