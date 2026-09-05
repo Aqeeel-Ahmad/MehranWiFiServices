@@ -1,0 +1,116 @@
+"""
+Django settings for mehran_wifi project.
+Mehran WiFi Service - Modern Fiber ISP Platform
+"""
+
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = 'django-insecure-(o5m+%2l722!tt^p^sn!m@_-3cw%h(0=n!buw1%zkk)0h+5u=q'
+
+DEBUG = True
+
+ALLOWED_HOSTS = ['*']
+
+# Application definition
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    # Local Apps
+    'apps.core.apps.CoreConfig',
+    'apps.accounts.apps.AccountsConfig',
+    'apps.packages.apps.PackagesConfig',
+    'apps.payments.apps.PaymentsConfig',
+    'apps.complaints.apps.ComplaintsConfig',
+    'apps.notifications.apps.NotificationsConfig',
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = 'mehran_wifi.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'apps.core.context_processors.site_settings',
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = 'mehran_wifi.wsgi.application'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 6},
+    },
+]
+
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'Asia/Karachi'
+
+USE_I18N = True
+
+USE_TZ = True
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'home'
+
+# Email Settings (Console backend for testing, outputs cleanly in console)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'support@mehranwifi.com'
+SERVER_EMAIL = 'admin@mehranwifi.com'
+
+# Mehran WiFi Service Constants
+EASYPAISA_NUMBER = '03454524086'
+EASYPAISA_ACCOUNT_NAME = 'Mehran WiFi Service'
+ISP_NAME = 'MEHRAN WIFI SERVICE'
+ISP_TAGLINE = 'Fast, Reliable & Unlimited Fiber Internet'
+ISP_PHONE = '03454524086'
+ISP_EMAIL = 'support@mehranwifi.com'
+ISP_ADDRESS = 'Main Optical Fiber Hub, Mehran City, Pakistan'

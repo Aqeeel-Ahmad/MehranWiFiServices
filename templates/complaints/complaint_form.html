@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Submit Complaint | Mehran WiFi Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="max-w-700 mx-auto">
+    <div class="glass-panel p-4 p-md-5 border-warning">
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <div class="p-3 rounded-circle bg-warning bg-opacity-20 text-warning fs-3">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <div>
+          <h3 class="text-light fw-bold mb-0">Register Service Complaint</h3>
+          <p class="text-secondary small mb-0">Mehran NOC team will respond to your ticket immediately.</p>
+        </div>
+      </div>
+
+      <form action="{% url 'submit_complaint' %}" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label text-light">User Name *</label>
+          <input type="text" name="user_name" class="form-control" placeholder="Enter your full name" required {% if user.is_authenticated %}value="{{ user.get_full_name|default:user.username }}"{% endif %}>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-light">Registered Phone Number *</label>
+          <input type="text" name="phone_number" class="form-control" placeholder="e.g. 03001234567" required {% if user.is_authenticated and user.profile.phone_number %}value="{{ user.profile.phone_number }}"{% endif %}>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-light">Complaint Subject *</label>
+          <select name="subject" class="form-select" required>
+            <option value="" disabled selected>Select issue category...</option>
+            <option value="Red Optical LOS Light on Router">Red Optical LOS Light on Router</option>
+            <option value="Slow Speed / High Latency">Slow Speed / High Latency</option>
+            <option value="Frequent Disconnection">Frequent Disconnection</option>
+            <option value="Optical Fiber Drop Wire Damaged">Optical Fiber Drop Wire Damaged</option>
+            <option value="Billing / Payment Verification">Billing / Payment Verification</option>
+            <option value="Other Service Issue">Other Service Issue</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label text-light">Complaint Description *</label>
+          <textarea name="description" class="form-control" rows="4" placeholder="Describe the problem you are experiencing..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-warning w-100 py-3 fw-bold text-dark fs-5">
+          <i class="bi bi-send-check me-2"></i> Submit Complaint to NOC
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

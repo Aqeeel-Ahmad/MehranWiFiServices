@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register Customer Account | Mehran WiFi Service{% endblock %}
+
+{% block content %}
+<div class="position-relative min-vh-80 d-flex align-items-center py-5">
+  <canvas id="fiber-canvas"></canvas>
+
+  <div class="container position-relative z-2">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="glass-panel p-4 p-md-5 border-cyan anim-fiber-glow">
+          <div class="text-center mb-4">
+            <img src="{% static 'images/logo.svg' %}" alt="Mehran WiFi Service" style="height: 52px;" class="mb-3">
+            <h3 class="text-light fw-bold mb-1">Customer Registration</h3>
+            <p class="text-secondary small">Join Mehran WiFi Service and experience lightning-speed fiber broadband.</p>
+          </div>
+
+          <form method="POST" action="{% url 'register' %}">
+            {% csrf_token %}
+
+            {% if form.errors %}
+              <div class="alert alert-danger p-3 mb-3 small">
+                {% for field, errors in form.errors.items %}
+                  <div><b>{{ field|title }}:</b> {{ errors|striptags }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="row g-3 mb-3">
+              <div class="col-sm-6">
+                <label class="form-label text-light">First Name *</label>
+                {{ form.first_name }}
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label text-light">Last Name *</label>
+                {{ form.last_name }}
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-sm-6">
+                <label class="form-label text-light">Username *</label>
+                {{ form.username }}
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label text-light">Email Address *</label>
+                {{ form.email }}
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-sm-6">
+                <label class="form-label text-light">Registered Phone Number *</label>
+                {{ form.phone_number }}
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label text-light">WhatsApp Number (For Receipts)</label>
+                {{ form.whatsapp_number }}
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label text-light">Installation Address (Optional)</label>
+              {{ form.address }}
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-sm-6">
+                <label class="form-label text-light">Password *</label>
+                {{ form.password }}
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label text-light">Confirm Password *</label>
+                {{ form.password_confirm }}
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-fiber-primary w-100 py-3 fs-5 mb-4 shadow">
+              <i class="bi bi-check-circle-fill me-2"></i> Complete Registration &amp; Log In
+            </button>
+
+            <div class="text-center text-secondary small border-top border-secondary border-opacity-25 pt-3">
+              Already have an account?<br/>
+              <a href="{% url 'login' %}" class="text-cyan fw-bold text-decoration-none fs-6">
+                Log In to Existing Account <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/fiber-canvas.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Track Package History | Mehran WiFi Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Page Header -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+    <div>
+      <div class="hero-tag mb-2">
+        <span class="dot-beacon-green"></span>
+        <span>Customer Account Ledger</span>
+      </div>
+      <h1 class="display-5 fw-bold text-light mb-1">Track <span class="text-gradient-fiber">Package History</span></h1>
+      <p class="text-secondary mb-0">Complete audit of all subscribed internet packages, activation logs, and payment receipts.</p>
+    </div>
+
+    <!-- Download PDF Action -->
+    <div>
+      <a href="{% url 'download_history_pdf' %}" class="btn btn-fiber-primary px-4 py-3 shadow">
+        <i class="bi bi-file-earmark-pdf-fill me-2 fs-5"></i> Download Complete Package History as PDF
+      </a>
+    </div>
+  </div>
+
+  <!-- Customer Overview Stats -->
+  <div class="row g-3 mb-5">
+    <div class="col-md-3 col-6">
+      <div class="glass-panel p-3">
+        <small class="text-secondary d-block mb-1">Customer Name</small>
+        <h5 class="text-light fw-bold mb-0">{{ user.get_full_name|default:user.username }}</h5>
+        <small class="text-muted">ID: #{{ user.id }}</small>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="glass-panel p-3">
+        <small class="text-secondary d-block mb-1">Joined Mehran WiFi</small>
+        <h5 class="text-light fw-bold mb-0">{{ user.date_joined|date:"M d, Y" }}</h5>
+        <small class="text-muted">Registered Customer</small>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="glass-panel p-3">
+        <small class="text-secondary d-block mb-1">Total Packages Purchased</small>
+        <h5 class="text-cyan fw-black font-monospace mb-0">{{ total_packages }}</h5>
+        <small class="text-muted">Lifetime Subscriptions</small>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="glass-panel p-3">
+        <small class="text-secondary d-block mb-1">Total Amount Paid</small>
+        <h5 class="text-success fw-black font-monospace mb-0">Rs. {{ total_spent|floatformat:0 }}</h5>
+        <small class="text-muted">Via EasyPaisa Gateway</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Active Package Banner (if exists) -->
+  {% if active_sub %}
+    <div class="active-package-banner mb-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+          <div class="active-status-pill mb-2">
+            <span class="dot-beacon-green"></span>
+            <span>🟢 Current Active Package</span>
+          </div>
+          <h3 class="text-light fw-bold mb-1">{{ active_sub.package_name_snapshot|default:active_sub.package.name }}</h3>
+          <p class="text-secondary small mb-0">
+            Speed: <b class="text-cyan font-monospace">{{ active_sub.speed_snapshot }} Mbps</b> &nbsp;|&nbsp;
+            Activated: <b class="text-light">{{ active_sub.activation_date|date:"M d, Y"|default:"Active" }}</b> &nbsp;|&nbsp;
+            Expires: <b class="text-warning">{{ active_sub.expiry_date|date:"F 08, Y" }}</b>
+          </p>
+        </div>
+        <div class="text-md-end">
+          <span class="badge bg-success bg-opacity-25 text-success border border-success px-3 py-2 fs-6">
+            <i class="bi bi-broadcast me-1"></i> {{ active_sub.remaining_days }} Days Remaining
+          </span>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Package History Table -->
+  <div class="glass-panel p-0 overflow-hidden">
+    <div class="p-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+      <h5 class="text-light fw-bold mb-0">Subscription &amp; Payment Ledger</h5>
+      <span class="badge bg-dark text-cyan border border-info border-opacity-25">{{ total_packages }} Records Found</span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-dark table-hover mb-0 align-middle">
+        <thead>
+          <tr class="text-secondary small text-uppercase">
+            <th class="ps-4">Package</th>
+            <th>Speed</th>
+            <th>Price</th>
+            <th>Purchase Date</th>
+            <th>Activation Date</th>
+            <th>Expiry Date</th>
+            <th>Status</th>
+            <th class="pe-4 text-end">Digital Receipt</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sub in subscriptions %}
+            <tr>
+              <!-- Package Name -->
+              <td class="ps-4">
+                <b class="text-light">{{ sub.package_name_snapshot|default:sub.package.name }}</b>
+                <div class="small text-muted font-monospace">Sub #{{ sub.id }}</div>
+              </td>
+
+              <!-- Speed -->
+              <td>
+                <span class="badge bg-dark text-cyan border border-info border-opacity-25 font-monospace">
+                  ⚡ {{ sub.speed_snapshot|default:sub.package.speed_mbps }} Mbps
+                </span>
+              </td>
+
+              <!-- Price -->
+              <td class="font-monospace text-light fw-bold">
+                Rs. {{ sub.price_snapshot|floatformat:0 }}
+              </td>
+
+              <!-- Purchase Date -->
+              <td class="small text-secondary">
+                {{ sub.purchase_date|date:"M d, Y" }}
+              </td>
+
+              <!-- Activation Date -->
+              <td class="small text-secondary">
+                {% if sub.activation_date %}
+                  {{ sub.activation_date|date:"M d, Y" }}
+                {% else %}
+                  <span class="text-muted">-</span>
+                {% endif %}
+              </td>
+
+              <!-- Expiry Date -->
+              <td class="small">
+                {% if sub.expiry_date %}
+                  <b class="text-warning">{{ sub.expiry_date|date:"M 08, Y" }}</b>
+                {% else %}
+                  <span class="text-muted">-</span>
+                {% endif %}
+              </td>
+
+              <!-- Status -->
+              <td>
+                {% if sub.status == 'active' %}
+                  <span class="badge bg-success px-3 py-1">
+                    <span class="dot-beacon-green me-1" style="width: 7px; height: 7px;"></span> Active
+                  </span>
+                {% elif sub.status == 'pending' %}
+                  <span class="badge bg-warning text-dark px-3 py-1">
+                    🟡 Pending Verification
+                  </span>
+                {% elif sub.status == 'expired' %}
+                  <span class="badge bg-secondary px-3 py-1">
+                    Expired
+                  </span>
+                {% else %}
+                  <span class="badge bg-dark border border-secondary px-3 py-1">
+                    {{ sub.get_status_display }}
+                  </span>
+                {% endif %}
+              </td>
+
+              <!-- Digital Receipt Link -->
+              <td class="pe-4 text-end">
+                {% if sub.payment %}
+                  <a href="{% url 'view_receipt' sub.payment.id %}" class="btn btn-sm btn-fiber-outline py-1 px-3">
+                    <i class="bi bi-receipt me-1"></i> View Receipt
+                  </a>
+                  <a href="{% url 'download_receipt_pdf' sub.payment.id %}" class="btn btn-sm btn-dark border-secondary py-1 px-2 text-secondary" title="Direct Download PDF">
+                    <i class="bi bi-download"></i>
+                  </a>
+                {% else %}
+                  <span class="text-muted small">No Payment</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="8" class="text-center py-5 text-secondary">
+                <i class="bi bi-inbox fs-1 d-block mb-2 text-muted"></i>
+                You have not purchased any packages yet.<br/>
+                <a href="{% url 'order_package' %}" class="btn btn-fiber-primary btn-sm mt-3">Browse &amp; Order Internet Packages</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

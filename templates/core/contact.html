@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact &amp; Support | Mehran WiFi Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="text-center max-w-700 mx-auto mb-5">
+    <div class="hero-tag mb-2">
+      <span class="dot-beacon-green"></span>
+      <span>24/7 Optical NOC Support Line</span>
+    </div>
+    <h1 class="display-5 fw-bold text-light mb-2">Get in Touch with <span class="text-gradient-fiber">Mehran WiFi</span></h1>
+    <p class="text-secondary">Have billing questions, connection inquiries, or require technical support? Our team is standing by.</p>
+  </div>
+
+  <div class="row g-4 mb-5">
+    <!-- Left: Contact Details Cards -->
+    <div class="col-lg-5">
+      <div class="d-flex flex-column gap-3">
+        <!-- Phone & Hotline -->
+        <div class="glass-panel p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="p-3 rounded-circle bg-cyan bg-opacity-10 text-cyan fs-4 border border-info border-opacity-25">
+              <i class="bi bi-telephone-fill"></i>
+            </div>
+            <div>
+              <small class="text-secondary text-uppercase fw-bold">Support Hotline</small>
+              <h5 class="text-light fw-bold mb-0 font-monospace">{{ ISP_PHONE }}</h5>
+              <small class="text-muted">Available 24/7 for troubleshooting</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- WhatsApp Support -->
+        <div class="glass-panel p-4 border-success">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <div class="d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; flex-shrink: 0;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="#25D366" aria-label="WhatsApp">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                </svg>
+              </div>
+              <div>
+                <small class="text-secondary text-uppercase fw-bold">WhatsApp Direct</small>
+                <h5 class="text-light fw-bold mb-0 font-monospace">{{ ISP_PHONE }}</h5>
+                <small class="text-muted">Fastest chat response</small>
+              </div>
+            </div>
+            <a href="https://api.whatsapp.com/send?phone=923454524086" target="_blank" class="btn btn-sm btn-success text-white">
+              <i class="bi bi-whatsapp me-1"></i> Chat Now
+            </a>
+          </div>
+        </div>
+
+        <!-- EasyPaisa Official Number -->
+        <div class="easypaisa-box p-4">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="badge bg-success text-white">OFFICIAL EASYPAISA</span>
+            <button onclick="copyEasyPaisaNumber('{{ EASYPAISA_NUMBER }}', this)" class="btn btn-sm btn-outline-success">
+              <i class="bi bi-clipboard me-1"></i> Copy
+            </button>
+          </div>
+          <div class="fs-4 fw-bold text-success font-monospace mb-1">{{ EASYPAISA_NUMBER }}</div>
+          <small class="text-secondary">Title: <b>{{ EASYPAISA_ACCOUNT_NAME }}</b></small>
+        </div>
+
+        <!-- Email Address -->
+        <div class="glass-panel p-4">
+          <div class="d-flex align-items-center gap-3">
+            <div class="p-3 rounded-circle bg-purple bg-opacity-10 text-purple-400 fs-4 border border-purple">
+              <i class="bi bi-envelope-fill"></i>
+            </div>
+            <div>
+              <small class="text-secondary text-uppercase fw-bold">Email Support</small>
+              <h6 class="text-light fw-bold mb-0">{{ ISP_EMAIL }}</h6>
+              <small class="text-muted">Official billing and partnership queries</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="glass-panel p-4">
+          <div class="d-flex align-items-start gap-3">
+            <div class="p-3 rounded-circle bg-dark text-cyan fs-4 border border-secondary mt-1">
+              <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <div>
+              <small class="text-secondary text-uppercase fw-bold">Headquarters &amp; NOC</small>
+              <h6 class="text-light fw-bold mb-0">{{ ISP_ADDRESS }}</h6>
+              <small class="text-muted">Network Operations &amp; Fiber Exchange Hub</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Interactive Contact Form & Map -->
+    <div class="col-lg-7">
+      <div class="glass-panel p-4 p-md-5 mb-4 border-cyan">
+        <h3 class="text-light fw-bold mb-1">Send Us a Message</h3>
+        <p class="text-secondary small mb-4">Fill in the details below and a service executive will reach out to you.</p>
+
+        <form method="POST" action="{% url 'contact' %}">
+          {% csrf_token %}
+          <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+              <label class="form-label text-light">Full Name *</label>
+              <input type="text" name="name" class="form-control" placeholder="Your name" required {% if user.is_authenticated %}value="{{ user.get_full_name|default:user.username }}"{% endif %}>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label text-light">Email Address *</label>
+              <input type="email" name="email" class="form-control" placeholder="name@example.com" required {% if user.is_authenticated %}value="{{ user.email }}"{% endif %}>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-sm-6">
+              <label class="form-label text-light">Contact Phone Number</label>
+              <input type="text" name="phone" class="form-control" placeholder="e.g. 03001234567" {% if user.is_authenticated and user.profile.phone_number %}value="{{ user.profile.phone_number }}"{% endif %}>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label text-light">Subject / Topic</label>
+              <input type="text" name="subject" class="form-control" placeholder="e.g. New Fiber Line Installation" required>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label text-light">Message *</label>
+            <textarea name="message" class="form-control" rows="4" placeholder="How can we assist you today?" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-fiber-primary w-100 py-3 fs-5 shadow">
+            <i class="bi bi-send-fill me-2"></i> Send Message
+          </button>
+        </form>
+      </div>
+
+      <!-- Cyber Stylized Map Placeholder -->
+      <div class="glass-panel p-4 text-center position-relative overflow-hidden" style="min-height: 200px;">
+        <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25" style="background: radial-gradient(circle, #38bdf8 10%, transparent 70%);"></div>
+        <div class="position-relative z-2">
+          <i class="bi bi-map fs-1 text-cyan mb-2 d-block"></i>
+          <h5 class="text-light fw-bold mb-1">Optical Fiber Coverage Map</h5>
+          <p class="text-secondary small mb-3">
+            Active FTTH distribution grids across Mehran and surrounding districts with continuous expansion.
+          </p>
+          <span class="badge bg-dark text-success border border-success px-3 py-2 font-monospace">
+            <i class="bi bi-check-circle-fill me-1"></i> Coverage Active &amp; Ready for Instant Line Drop
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

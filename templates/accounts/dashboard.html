@@ -1,0 +1,331 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Dashboard | Mehran WiFi Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Welcome Banner -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+    <div>
+      <div class="hero-tag mb-2">
+        <span class="dot-beacon-green"></span>
+        <span>Subscriber Control Panel</span>
+      </div>
+      <h1 class="display-5 fw-bold text-light mb-1">
+        Welcome, <span class="text-gradient-fiber">{{ user.first_name|default:user.username }}</span>!
+      </h1>
+      <p class="text-secondary mb-0">
+        Account ID: <b class="text-light">#{{ user.id }}</b> &nbsp;|&nbsp;
+        Registered Phone: <b class="text-light">{{ profile.phone_number|default:"Not Added" }}</b> &nbsp;|&nbsp;
+        Member Since: <b class="text-light">{{ user.date_joined|date:"F Y" }}</b>
+      </p>
+    </div>
+
+    <div class="d-flex gap-2">
+      <a href="{% url 'order_package' %}" class="btn btn-fiber-primary py-2 px-3">
+        <i class="bi bi-cart-plus me-1"></i> Order / Renew Package
+      </a>
+      <a href="{% url 'track' %}" class="btn btn-fiber-outline py-2 px-3">
+        <i class="bi bi-clock-history me-1"></i> Full History
+      </a>
+    </div>
+  </div>
+
+  <!-- Pending Verification Alert if any -->
+  {% if pending_sub %}
+    <div class="alert alert-warning bg-warning bg-opacity-10 border border-warning text-warning-emphasis p-4 rounded-4 shadow mb-5">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div class="d-flex align-items-center gap-3">
+          <span class="dot-beacon-amber" style="width: 14px; height: 14px;"></span>
+          <div>
+            <h5 class="fw-bold mb-1 text-warning">Payment Under Verification</h5>
+            <p class="mb-0 small text-light opacity-75">
+              Your payment for <b>{{ pending_sub.package_name_snapshot|default:pending_sub.package.name }}</b> is currently being verified by our NOC team. Your internet package will be activated shortly.
+            </p>
+          </div>
+        </div>
+        <div>
+          {% if pending_sub.payment %}
+            <a href="{% url 'view_receipt' pending_sub.payment.id %}" class="btn btn-warning text-dark fw-bold btn-sm px-3 py-2">
+              <i class="bi bi-receipt me-1"></i> View Pending Receipt
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Active Package Status Section -->
+  <div class="row g-4 mb-5">
+    <div class="col-lg-8">
+      {% if active_sub %}
+        <!-- Active Package Card with 🟢 Pulsing Green Indicator -->
+        <div class="active-package-banner h-100 p-4 p-md-5">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start gap-3 mb-4">
+            <div>
+              <div class="active-status-pill mb-3">
+                <span class="dot-beacon-green"></span>
+                <span>🟢 PACKAGE ACTIVE</span>
+              </div>
+              <h2 class="display-6 fw-bold text-light mb-1">
+                {{ active_sub.package_name_snapshot|default:active_sub.package.name }}
+              </h2>
+              <div class="text-secondary">High-Speed Optical Fiber Internet (FTTH)</div>
+            </div>
+
+            <div class="text-sm-end">
+              <div class="display-5 fw-black text-cyan font-monospace">
+                {{ active_sub.speed_snapshot }} <span class="fs-4">Mbps</span>
+              </div>
+              <small class="text-success fw-bold">Unthrottled Bandwidth</small>
+            </div>
+          </div>
+
+          <!-- Package Details Grid -->
+          <div class="row g-3 pt-3 border-top border-secondary border-opacity-25 mb-4">
+            <div class="col-sm-3 col-6">
+              <small class="text-secondary d-block">Monthly Price</small>
+              <span class="fs-5 text-light fw-bold font-monospace">Rs. {{ active_sub.price_snapshot|floatformat:0 }}</span>
+            </div>
+            <div class="col-sm-3 col-6">
+              <small class="text-secondary d-block">Activated On</small>
+              <span class="fs-6 text-light fw-bold">{{ active_sub.activation_date|date:"F d, Y"|default:active_sub.purchase_date|date:"F d, Y" }}</span>
+            </div>
+            <div class="col-sm-3 col-6">
+              <small class="text-secondary d-block">Expiry Date</small>
+              <span class="fs-6 text-warning fw-bold">{{ active_sub.expiry_date|date:"F 08, Y" }}</span>
+            </div>
+            <div class="col-sm-3 col-6">
+              <small class="text-secondary d-block">Remaining Days</small>
+              <span class="fs-5 text-success fw-bold font-monospace">{{ active_sub.remaining_days }} Days Left</span>
+            </div>
+          </div>
+
+          <!-- Remaining Days Progress Bar -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between small text-secondary mb-1">
+              <span>Active Period (Cycle resets on 8th)</span>
+              <span>{{ active_sub.remaining_days }} days remaining</span>
+            </div>
+            <div class="progress" style="height: 8px; background: rgba(255,255,255,0.1);">
+              <div class="progress-bar bg-success" role="progressbar" style="width: {% widthratio active_sub.remaining_days 30 100 %}%"></div>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="d-flex flex-wrap gap-2">
+            {% if active_sub.payment %}
+              <a href="{% url 'view_receipt' active_sub.payment.id %}" class="btn btn-fiber-outline btn-sm px-3 py-2">
+                <i class="bi bi-receipt me-1"></i> Current Receipt
+              </a>
+              <a href="{% url 'download_receipt_pdf' active_sub.payment.id %}" class="btn btn-dark border-secondary btn-sm px-3 py-2 text-secondary">
+                <i class="bi bi-file-earmark-pdf me-1"></i> Download PDF
+              </a>
+            {% endif %}
+            <a href="{% url 'order_package' %}" class="btn btn-fiber-primary btn-sm px-3 py-2 ms-auto">
+              <i class="bi bi-arrow-up-circle me-1"></i> Upgrade Speed
+            </a>
+          </div>
+        </div>
+      {% else %}
+        <!-- No Active Package Card -->
+        <div class="glass-panel h-100 p-4 p-md-5 text-center d-flex flex-column justify-content-center align-items-center">
+          <div class="p-3 rounded-circle bg-dark border border-secondary mb-3">
+            <i class="bi bi-wifi-off fs-1 text-secondary"></i>
+          </div>
+          <h3 class="text-light fw-bold mb-2">No Active Internet Package</h3>
+          <p class="text-secondary max-w-500 mx-auto mb-4">
+            You currently do not have an active fiber internet package. Subscribe today to enjoy high-speed, unlimited broadband with EasyPaisa payment.
+          </p>
+          <a href="{% url 'order_package' %}" class="btn btn-fiber-primary btn-lg px-4 py-2">
+            <i class="bi bi-lightning-charge me-1"></i> Choose a Fiber Package
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Quick Stats Cards (Right Column) -->
+    <div class="col-lg-4">
+      <div class="d-flex flex-column gap-3 h-100">
+        <!-- Total Spent Card -->
+        <div class="glass-panel p-4 flex-grow-1">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="text-secondary small">Total Spent with Mehran</span>
+            <div class="p-2 rounded-2 bg-success bg-opacity-20 text-success"><i class="bi bi-wallet2"></i></div>
+          </div>
+          <h3 class="text-light fw-bold font-monospace mb-1">Rs. {{ total_spent|floatformat:0 }}</h3>
+          <small class="text-muted">Lifetime verified billing</small>
+        </div>
+
+        <!-- Total Subscriptions Card -->
+        <div class="glass-panel p-4 flex-grow-1">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="text-secondary small">Total Packages Subscribed</span>
+            <div class="p-2 rounded-2 bg-info bg-opacity-20 text-cyan"><i class="bi bi-layers-fill"></i></div>
+          </div>
+          <h3 class="text-light fw-bold font-monospace mb-1">{{ total_packages_count }}</h3>
+          <small class="text-muted">Past &amp; current packages</small>
+        </div>
+
+        <!-- EasyPaisa Instant Renewal Shortcut -->
+        <div class="p-4 rounded-3" style="background: rgba(0, 166, 81, 0.12); border: 1px solid rgba(0, 166, 81, 0.4);">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <i class="bi bi-send-check text-success fs-5"></i>
+            <b class="text-light">EasyPaisa Renewal:</b>
+          </div>
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="font-monospace text-success fw-bold fs-5">{{ EASYPAISA_NUMBER }}</span>
+            <button onclick="copyEasyPaisaNumber('{{ EASYPAISA_NUMBER }}', this)" class="btn btn-sm btn-outline-success">
+              Copy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Payments & Invoices -->
+  <div class="row g-4 mb-5">
+    <div class="col-lg-8">
+      <div class="glass-panel p-0 overflow-hidden">
+        <div class="p-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+          <h5 class="text-light fw-bold mb-0">Recent Payment Receipts</h5>
+          <a href="{% url 'track' %}" class="btn btn-fiber-outline btn-sm">View All History</a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-dark table-hover mb-0 align-middle">
+            <thead>
+              <tr class="text-secondary small">
+                <th class="ps-4">Receipt #</th>
+                <th>Package</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th class="pe-4 text-end">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for p in recent_payments %}
+                <tr>
+                  <td class="ps-4 font-monospace small text-cyan fw-bold">
+                    {{ p.receipt_number }}
+                  </td>
+                  <td>
+                    {% if p.subscription %}
+                      {{ p.subscription.package_name_snapshot|default:p.subscription.package.name }}
+                    {% else %}
+                      Fiber Payment
+                    {% endif %}
+                  </td>
+                  <td class="font-monospace fw-bold">Rs. {{ p.amount|floatformat:0 }}</td>
+                  <td class="small text-secondary">{{ p.payment_date|date:"M d, Y" }}</td>
+                  <td>
+                    {% if p.verification_status == 'verified' %}
+                      <span class="badge bg-success">Verified</span>
+                    {% elif p.verification_status == 'pending' %}
+                      <span class="badge bg-warning text-dark">Pending</span>
+                    {% else %}
+                      <span class="badge bg-danger">Rejected</span>
+                    {% endif %}
+                  </td>
+                  <td class="pe-4 text-end">
+                    <a href="{% url 'view_receipt' p.id %}" class="btn btn-sm btn-dark border-secondary py-1 px-2 text-cyan">
+                      <i class="bi bi-receipt"></i> Receipt
+                    </a>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center py-4 text-secondary">
+                    No payment records found.
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Help & Complaints -->
+    <div class="col-lg-4">
+      <div class="glass-panel p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="text-light fw-bold mb-0">Support Tickets</h5>
+          <a href="{% url 'complaint_list' %}" class="btn btn-sm btn-outline-secondary border-0 text-cyan">All Tickets</a>
+        </div>
+
+        {% if recent_complaints %}
+          <div class="d-flex flex-column gap-3 mb-4">
+            {% for c in recent_complaints %}
+              <div class="p-3 rounded-3 bg-dark border border-secondary border-opacity-25">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="badge bg-secondary font-monospace" style="font-size: 0.75rem;">{{ c.ticket_number }}</span>
+                  {% if c.status == 'resolved' %}
+                    <span class="badge bg-success" style="font-size: 0.75rem;">Resolved</span>
+                  {% elif c.status == 'in_progress' %}
+                    <span class="badge bg-primary" style="font-size: 0.75rem;">In Progress</span>
+                  {% else %}
+                    <span class="badge bg-warning text-dark" style="font-size: 0.75rem;">Pending</span>
+                  {% endif %}
+                </div>
+                <div class="text-light small fw-bold text-truncate">{{ c.subject }}</div>
+                <small class="text-muted">{{ c.created_at|date:"M d, H:i" }}</small>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-secondary small mb-4">No active complaints. Your internet connection is running smoothly!</p>
+        {% endif %}
+
+        <button type="button" class="btn btn-fiber-outline w-100 py-2" data-bs-toggle="modal" data-bs-target="#quickComplaintModal">
+          <i class="bi bi-plus-circle me-1"></i> Report an Issue / Ticket
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Complaint Modal -->
+<div class="modal fade" id="quickComplaintModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content glass-panel border-cyan text-light">
+      <div class="modal-header border-secondary border-opacity-25">
+        <h5 class="modal-title fw-bold">Report an Issue to Mehran NOC</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{% url 'submit_complaint' %}" method="POST">
+        {% csrf_token %}
+        <div class="modal-body">
+          <input type="hidden" name="user_name" value="{{ user.get_full_name|default:user.username }}">
+          <div class="mb-3">
+            <label class="form-label">Contact Phone Number</label>
+            <input type="text" name="phone_number" class="form-control" value="{{ profile.phone_number|default:'' }}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Subject</label>
+            <select name="subject" class="form-select" required>
+              <option value="Red Optical LOS Light on Router">Red Optical LOS Light on Router</option>
+              <option value="Slow Speed / High Latency">Slow Speed / High Latency</option>
+              <option value="Frequent Disconnection">Frequent Disconnection</option>
+              <option value="Optical Fiber Drop Wire Damaged">Optical Fiber Drop Wire Damaged</option>
+              <option value="Billing / Payment Verification">Billing / Payment Verification</option>
+              <option value="Other Service Issue">Other Service Issue</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Detailed Description</label>
+            <textarea name="description" class="form-control" rows="3" placeholder="Explain the symptoms..." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-secondary border-opacity-25">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-fiber-primary">Submit Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

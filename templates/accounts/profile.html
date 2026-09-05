@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Customer Profile | Mehran WiFi Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="max-w-700 mx-auto">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div>
+        <h2 class="text-light fw-bold mb-1">Subscriber Profile</h2>
+        <p class="text-secondary small mb-0">Update your contact details and installation location.</p>
+      </div>
+      <a href="{% url 'dashboard' %}" class="btn btn-fiber-outline btn-sm">
+        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+      </a>
+    </div>
+
+    <div class="glass-panel p-4 p-md-5 border-cyan">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row g-3 mb-3">
+          <div class="col-sm-6">
+            <label class="form-label text-light">First Name</label>
+            {{ form.first_name }}
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label text-light">Last Name</label>
+            {{ form.last_name }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label text-light">Email Address</label>
+          {{ form.email }}
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-sm-6">
+            <label class="form-label text-light">Registered Phone Number</label>
+            {{ form.phone_number }}
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label text-light">WhatsApp Number</label>
+            {{ form.whatsapp_number }}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label text-light">Customer / Installation Address</label>
+          {{ form.address }}
+        </div>
+
+        <button type="submit" class="btn btn-fiber-primary px-4 py-2">
+          <i class="bi bi-save me-1"></i> Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Support Complaints | Mehran WiFi Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+    <div>
+      <div class="hero-tag mb-2">
+        <span class="dot-beacon-green"></span>
+        <span>Customer Care Helpdesk</span>
+      </div>
+      <h1 class="display-5 fw-bold text-light mb-1">My Service <span class="text-gradient-fiber">Complaints &amp; Tickets</span></h1>
+      <p class="text-secondary mb-0">Track technical support tickets, technician responses, and resolution status.</p>
+    </div>
+
+    <a href="{% url 'home' %}#complaint-section" class="btn btn-warning text-dark fw-bold px-4 py-3">
+      <i class="bi bi-plus-circle me-1"></i> Submit New Complaint
+    </a>
+  </div>
+
+  <div class="glass-panel p-0 overflow-hidden">
+    <div class="p-4 border-bottom border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
+      <h5 class="text-light fw-bold mb-0">Logged Tickets</h5>
+      <span class="badge bg-dark text-cyan border border-info border-opacity-25">{{ complaints.count }} Total Tickets</span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-dark table-hover mb-0 align-middle">
+        <thead>
+          <tr class="text-secondary small">
+            <th class="ps-4">Ticket #</th>
+            <th>Subject</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Date Logged</th>
+            <th class="pe-4">Technician / NOC Response</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in complaints %}
+            <tr>
+              <td class="ps-4 font-monospace text-cyan fw-bold">
+                {{ c.ticket_number }}
+              </td>
+              <td class="fw-bold text-light">
+                {{ c.subject }}
+              </td>
+              <td class="small text-secondary" style="max-width: 250px;">
+                {{ c.description }}
+              </td>
+              <td>
+                {% if c.status == 'resolved' %}
+                  <span class="badge bg-success">🟢 Resolved</span>
+                {% elif c.status == 'in_progress' %}
+                  <span class="badge bg-primary">🔵 Tech Assigned</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark">🟡 Pending Review</span>
+                {% endif %}
+              </td>
+              <td class="small text-secondary">
+                {{ c.created_at|date:"M d, Y H:i" }}
+              </td>
+              <td class="pe-4 small text-secondary">
+                {% if c.admin_response %}
+                  <div class="p-2 rounded-2 bg-dark border border-secondary text-light">
+                    <i class="bi bi-chat-left-dots text-cyan me-1"></i> {{ c.admin_response }}
+                  </div>
+                {% else %}
+                  <span class="text-muted fst-italic">Awaiting technician update</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="6" class="text-center py-5 text-secondary">
+                <i class="bi bi-emoji-smile fs-1 d-block mb-2 text-success"></i>
+                No complaints registered. Your fiber line is operating in optimal condition!
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

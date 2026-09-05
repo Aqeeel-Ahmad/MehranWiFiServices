@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | Mehran WiFi Service{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Page Title -->
+  <div class="text-center max-w-800 mx-auto mb-5">
+    <div class="hero-tag mb-2">
+      <span class="dot-beacon-green"></span>
+      <span>Empowering High-Speed Fiber Connectivity</span>
+    </div>
+    <h1 class="display-4 fw-bold text-light mb-3">About <span class="text-gradient-fiber">Mehran WiFi Service</span></h1>
+    <p class="lead text-secondary">
+      Mehran WiFi Service is a premier Fiber-To-The-Home (FTTH) internet service provider committed to delivering ultra-fast, symmetric, and ultra-reliable broadband to residential and commercial communities.
+    </p>
+  </div>
+
+  <!-- Mission & Vision Cards -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-6">
+      <div class="glass-panel p-4 p-md-5 h-100 border-cyan">
+        <div class="d-inline-flex p-3 rounded-3 bg-dark border border-secondary mb-3 text-cyan fs-3">
+          <i class="bi bi-compass"></i>
+        </div>
+        <h3 class="text-light fw-bold mb-3">Our Mission</h3>
+        <p class="text-secondary mb-0">
+          Our mission is to eliminate buffering, latency spikes, and internet downtime by delivering genuine Gigabit Passive Optical Network (GPON) fiber cables directly into every household and business. We believe premium fiber internet should be affordable, transparent, and easy to pay through trusted mobile solutions like EasyPaisa.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="glass-panel p-4 p-md-5 h-100 border-purple">
+        <div class="d-inline-flex p-3 rounded-3 bg-dark border border-secondary mb-3 text-purple-400 fs-3">
+          <i class="bi bi-eye"></i>
+        </div>
+        <h3 class="text-light fw-bold mb-3">Our Vision</h3>
+        <p class="text-secondary mb-0">
+          We envision a digitally empowered society where remote workers, students, gamers, and entrepreneurs enjoy uninterrupted optical connectivity. We strive to be the most customer-centric ISP in the region, recognized for speed, service integrity, and rapid technical support.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optical Infrastructure Highlights -->
+  <div class="glass-panel p-4 p-md-5 mb-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <span class="text-cyan fw-bold text-uppercase tracking-wider small">State-Of-The-Art Engineering</span>
+        <h2 class="display-6 fw-bold text-light mt-1 mb-3">Next-Generation <span class="text-gradient-fiber">Optical Architecture</span></h2>
+        <p class="text-secondary mb-4">
+          Unlike legacy copper cable or microwave wireless setups that suffer from rain fade and electrical interference, Mehran WiFi Service utilizes pure dielectric glass optical fibers from our Network Operations Center (NOC) directly to your optical terminal (ONT).
+        </p>
+
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex align-items-start gap-3">
+            <div class="p-2 rounded-2 bg-success bg-opacity-20 text-success fs-5"><i class="bi bi-check2-circle"></i></div>
+            <div>
+              <h6 class="text-light fw-bold mb-1">True FTTH (Fiber-To-The-Home)</h6>
+              <small class="text-secondary">Dedicated glass core directly terminating inside your premises.</small>
+            </div>
+          </div>
+          <div class="d-flex align-items-start gap-3">
+            <div class="p-2 rounded-2 bg-info bg-opacity-20 text-cyan fs-5"><i class="bi bi-speedometer2"></i></div>
+            <div>
+              <h6 class="text-light fw-bold mb-1">Gaming Optimized Routes</h6>
+              <small class="text-secondary">Low-ping peering with Singapore, Europe, and Middle East gaming clusters.</small>
+            </div>
+          </div>
+          <div class="d-flex align-items-start gap-3">
+            <div class="p-2 rounded-2 bg-purple bg-opacity-20 text-purple-400 fs-5"><i class="bi bi-hdd-network"></i></div>
+            <div>
+              <h6 class="text-light fw-bold mb-1">Local CDN Caching Servers</h6>
+              <small class="text-secondary">Instant 4K/8K buffering with embedded YouTube, Netflix, and TikTok caches.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 text-center">
+        <div class="p-4 rounded-4 bg-dark border border-secondary border-opacity-50 shadow-lg position-relative overflow-hidden">
+          <div class="display-1 text-gradient-fiber fw-black font-monospace mb-2">99.9%</div>
+          <h4 class="text-light fw-bold mb-2">Service Availability SLA</h4>
+          <p class="text-secondary small mb-4">
+            Backed by optical loop redundancy and diesel generator backup at all distribution hub nodes.
+          </p>
+
+          <div class="row g-2 text-start">
+            <div class="col-6">
+              <div class="p-3 rounded-2 bg-secondary bg-opacity-10 border border-secondary border-opacity-25">
+                <small class="text-secondary d-block">Average Resolution Time</small>
+                <b class="text-light font-monospace fs-5">&lt; 45 Mins</b>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-3 rounded-2 bg-secondary bg-opacity-10 border border-secondary border-opacity-25">
+                <small class="text-secondary d-block">Subscribers Satisfied</small>
+                <b class="text-success font-monospace fs-5">10,000+</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer Satisfaction Guarantee CTA -->
+  <div class="text-center p-5 rounded-4 border-cyan glass-panel">
+    <h3 class="text-light fw-bold mb-2">Ready to Upgrade to Optical Fiber?</h3>
+    <p class="text-secondary max-w-600 mx-auto mb-4">
+      Join Mehran WiFi Service today. Select your package, pay instantly via EasyPaisa to 03454524086, and get connected.
+    </p>
+    <a href="{% url 'order_package' %}" class="btn btn-fiber-primary btn-lg px-4 py-3">
+      <i class="bi bi-cart-check me-2"></i> Choose Internet Package
+    </a>
+  </div>
+</div>
+{% endblock %}

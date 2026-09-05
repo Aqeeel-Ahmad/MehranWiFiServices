@@ -1,0 +1,488 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mehran WiFi Service | Fast, Reliable & Unlimited Fiber Internet{% endblock %}
+
+{% block content %}
+<!-- ==========================================================================
+     Hero Section with Interactive Fiber Canvas
+     ========================================================================== -->
+<section class="hero-section">
+  <canvas id="fiber-canvas"></canvas>
+
+  <div class="container hero-content">
+    <div class="row align-items-center g-5">
+      <!-- Left Hero Text -->
+      <div class="col-lg-7 text-center text-lg-start">
+        <div class="hero-tag anim-float">
+          <span class="dot-beacon-green"></span>
+          <span>Next-Gen Optical Fiber (FTTH) Network Active</span>
+        </div>
+
+        <h1 class="hero-title">
+          Fast, Reliable &amp; Unlimited Internet with <span class="text-gradient-fiber">Mehran WiFi Service</span>
+        </h1>
+
+        <p class="lead text-secondary mb-4 pe-lg-4 fs-5">
+          Experience buffer-free 4K streaming, zero-lag competitive gaming, and ultra-fast optical fiber speeds directly to your home. Simple monthly billing via EasyPaisa with instant activation.
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start mb-5">
+          <a href="{% url 'order_package' %}" class="btn btn-fiber-primary btn-lg px-4 py-3 shadow-lg">
+            <i class="bi bi-lightning-charge-fill fs-5"></i> Get Started
+          </a>
+          <a href="#packages-section" class="btn btn-fiber-outline btn-lg px-4 py-3">
+            <i class="bi bi-grid-fill"></i> View Packages
+          </a>
+          <a href="{% url 'track' %}" class="btn btn-dark border-secondary btn-lg px-4 py-3 text-secondary">
+            <i class="bi bi-activity"></i> Track Connection
+          </a>
+        </div>
+
+        <!-- Live Fiber Stats Strip -->
+        <div class="row g-3 text-start">
+          <div class="col-sm-4 col-6">
+            <div class="p-3 rounded-3" style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glass);">
+              <div class="text-cyan fw-bold fs-4 font-monospace">99.9%</div>
+              <small class="text-secondary">Network Uptime</small>
+            </div>
+          </div>
+          <div class="col-sm-4 col-6">
+            <div class="p-3 rounded-3" style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glass);">
+              <div class="text-gradient-fiber fw-bold fs-4 font-monospace">&lt; 5 ms</div>
+              <small class="text-secondary">Ultra-Low Ping</small>
+            </div>
+          </div>
+          <div class="col-sm-4 col-12">
+            <div class="p-3 rounded-3" style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glass);">
+              <div class="text-success fw-bold fs-4 font-monospace">EasyPaisa</div>
+              <small class="text-secondary">1-Click Fast Pay</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Interactive Fiber Speed Card -->
+      <div class="col-lg-5">
+        <div class="glass-panel anim-fiber-glow p-4 position-relative">
+          <div class="d-flex align-items-center justify-content-between mb-4 border-bottom border-secondary border-opacity-25 pb-3">
+            <div class="d-flex align-items-center gap-2">
+              <span class="dot-beacon-green"></span>
+              <span class="fw-bold text-light small">LIVE FIBER OPTIC FEED</span>
+            </div>
+            <span class="badge bg-dark text-cyan border border-info border-opacity-25 font-monospace">MEHRAN-NOC</span>
+          </div>
+
+          <!-- Speed Meter Display -->
+          <div class="text-center py-3">
+            <div class="d-inline-flex align-items-baseline gap-2 mb-2">
+              <span class="display-3 fw-black text-gradient-fiber font-monospace">50.0</span>
+              <span class="fs-4 text-cyan fw-bold">Mbps</span>
+            </div>
+            <div class="text-secondary small mb-4">Dedicated Optical Fiber Bandwidth</div>
+
+            <!-- Ping / Jitter / Packet Loss -->
+            <div class="row g-2 mb-4">
+              <div class="col-4">
+                <div class="p-2 rounded-2 bg-dark bg-opacity-75 border border-secondary border-opacity-25">
+                  <div class="text-success small fw-bold font-monospace">3 ms</div>
+                  <div class="text-muted" style="font-size: 0.75rem;">PING</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-2 rounded-2 bg-dark bg-opacity-75 border border-secondary border-opacity-25">
+                  <div class="text-cyan small fw-bold font-monospace">0.8 ms</div>
+                  <div class="text-muted" style="font-size: 0.75rem;">JITTER</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-2 rounded-2 bg-dark bg-opacity-75 border border-secondary border-opacity-25">
+                  <div class="text-success small fw-bold font-monospace">0.0%</div>
+                  <div class="text-muted" style="font-size: 0.75rem;">LOSS</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Optical Signal Level -->
+            <div class="p-3 rounded-3 text-start mb-4" style="background: rgba(56, 189, 248, 0.08); border: 1px dashed var(--border-cyan);">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small text-secondary">Optical RX Power:</span>
+                <span class="small font-monospace text-cyan fw-bold">-18.4 dBm (Optimal)</span>
+              </div>
+              <div class="progress" style="height: 6px; background: rgba(255,255,255,0.1);">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 88%"></div>
+              </div>
+            </div>
+
+            <a href="{% url 'order_package' %}" class="btn btn-fiber-primary w-100 py-3">
+              <i class="bi bi-cart-check-fill"></i> Select Internet Package Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     Services Section
+     ========================================================================== -->
+<section class="py-5" id="services-section">
+  <div class="container py-4">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="text-cyan fw-bold text-uppercase tracking-wide small">Enterprise Features</span>
+      <h2 class="display-5 fw-bold mt-2">Why Choose <span class="text-gradient-fiber">Mehran WiFi Service</span>?</h2>
+      <p class="text-secondary">Engineered with high-grade optical infrastructure, low latency routing, and dedicated customer support.</p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Service 1 -->
+      <div class="col-lg-3 col-md-6">
+        <div class="glass-panel h-100 p-4 text-center">
+          <div class="mb-3 d-inline-flex p-3 rounded-circle" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--border-cyan);">
+            <i class="bi bi-broadcast fs-2 text-cyan"></i>
+          </div>
+          <h5 class="fw-bold text-light mb-2">High-Speed Fiber Internet</h5>
+          <p class="text-secondary small mb-0">
+            True Fiber-To-The-Home (FTTH) technology delivering consistent, unthrottled gigabit bandwidth for home and office.
+          </p>
+        </div>
+      </div>
+
+      <!-- Service 2 -->
+      <div class="col-lg-3 col-md-6">
+        <div class="glass-panel h-100 p-4 text-center">
+          <div class="mb-3 d-inline-flex p-3 rounded-circle" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4);">
+            <i class="bi bi-shield-check fs-2 text-success"></i>
+          </div>
+          <h5 class="fw-bold text-light mb-2">Reliable Connection</h5>
+          <p class="text-secondary small mb-0">
+            99.9% guaranteed uptime backed by redundant fiber rings, automatic route failover, and battery-backed optical hubs.
+          </p>
+        </div>
+      </div>
+
+      <!-- Service 3 -->
+      <div class="col-lg-3 col-md-6">
+        <div class="glass-panel h-100 p-4 text-center">
+          <div class="mb-3 d-inline-flex p-3 rounded-circle" style="background: rgba(139, 92, 246, 0.15); border: 1px solid var(--border-purple);">
+            <i class="bi bi-wallet2 fs-2 text-purple-400"></i>
+          </div>
+          <h5 class="fw-bold text-light mb-2">Affordable Packages</h5>
+          <p class="text-secondary small mb-0">
+            Competitive pricing starting from Rs. 1,200/month with zero hidden charges and seamless EasyPaisa mobile payments.
+          </p>
+        </div>
+      </div>
+
+      <!-- Service 4 -->
+      <div class="col-lg-3 col-md-6">
+        <div class="glass-panel h-100 p-4 text-center">
+          <div class="mb-3 d-inline-flex p-3 rounded-circle" style="background: rgba(236, 72, 153, 0.15); border: 1px solid rgba(236, 72, 153, 0.4);">
+            <i class="bi bi-headset fs-2 text-pink"></i>
+          </div>
+          <h5 class="fw-bold text-light mb-2">24/7 Dedicated Support</h5>
+          <p class="text-secondary small mb-0">
+            Around-the-clock technician response, WhatsApp customer helpline, and rapid on-site optical fiber splicing assistance.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     Packages Section
+     ========================================================================== -->
+<section class="py-5" id="packages-section" style="background: rgba(11, 17, 32, 0.5);">
+  <div class="container py-4">
+    <div class="d-flex flex-column flex-md-row align-items-md-end justify-content-between mb-5">
+      <div>
+        <span class="text-cyan fw-bold text-uppercase tracking-wide small">High Speed Plans</span>
+        <h2 class="display-5 fw-bold mt-1">Popular <span class="text-gradient-fiber">Fiber Packages</span></h2>
+        <p class="text-secondary mb-0">Select your ideal bandwidth. Package expiry automatically calculated as 8th of next month.</p>
+      </div>
+      <div class="mt-3 mt-md-0">
+        <a href="{% url 'package_list' %}" class="btn btn-fiber-outline">
+          View All Packages <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      {% for pkg in packages %}
+        {% if pkg.speed_mbps != 15 and pkg.speed_mbps != 30 or pkg.is_custom %}
+          {% if pkg.is_custom %}
+            <!-- Customizable Package Card (2 Mbps to 30 Mbps) -->
+            <div class="col-lg-4 col-md-6">
+              <div class="package-card border-cyan position-relative anim-fiber-glow">
+                <div class="position-absolute top-0 start-50 translate-middle badge bg-primary text-white fw-bold px-3 py-1 shadow">
+                  🛠️ CUSTOMIZE (2 - 30 MB)
+                </div>
+
+                <div>
+                  <div class="d-flex align-items-baseline justify-content-between mb-2 mt-1">
+                    <div>
+                      <span class="package-speed-badge" id="home-custom-speed-val">10</span>
+                      <span class="fs-5 text-cyan fw-bold">Mbps</span>
+                    </div>
+                    <span class="badge bg-dark border border-cyan text-cyan font-monospace">CUSTOM</span>
+                  </div>
+                  <h5 class="text-light fw-bold mb-1">Custom Fiber Plan</h5>
+                  <p class="text-secondary small mb-3">Adjust speed from 2 Mbps to 30 Mbps to fit your exact budget.</p>
+
+                  <!-- Interactive Speed Range Slider (2 to 30 Mbps) -->
+                  <div class="mb-3 p-2 rounded-3 bg-dark border border-secondary border-opacity-25">
+                    <div class="d-flex justify-content-between small text-secondary mb-1">
+                      <span>2 MB</span>
+                      <span class="text-cyan fw-bold">Drag to change speed</span>
+                      <span>30 MB</span>
+                    </div>
+                    <input type="range" class="form-range" min="2" max="30" step="1" value="10" id="home-custom-speed-slider">
+                  </div>
+
+                  <div class="mb-4">
+                    <span class="package-price" id="home-custom-price-val">Rs. 1,200</span>
+                    <span class="text-secondary small"> / month</span>
+                  </div>
+                </div>
+
+                <a href="{% url 'order_package' %}?package_id={{ pkg.id }}&custom_speed=10" id="home-custom-order-btn" class="btn btn-fiber-primary w-100 py-2">
+                  <i class="bi bi-sliders me-1"></i> Customize &amp; Order
+                </a>
+              </div>
+            </div>
+          {% else %}
+            <div class="col-lg-4 col-md-6">
+              <div class="package-card {% if pkg.is_featured %}glass-card-featured{% endif %}">
+                {% if pkg.is_featured %}
+                  <div class="position-absolute top-0 start-50 translate-middle badge bg-info text-dark fw-bold px-3 py-1 shadow">
+                    ⚡ MOST POPULAR
+                  </div>
+                {% endif %}
+
+                <div>
+                  <div class="d-flex align-items-baseline justify-content-between mb-2">
+                    <span class="package-speed-badge">{{ pkg.speed_mbps }}</span>
+                    <span class="fs-5 text-cyan fw-bold">Mbps</span>
+                  </div>
+                  <h5 class="text-light fw-bold mb-1">{{ pkg.name }}</h5>
+                  <p class="text-secondary small mb-3">{{ pkg.description|truncatechars:70 }}</p>
+
+                  <div class="mb-4">
+                    <span class="package-price">Rs. {{ pkg.price|floatformat:0 }}</span>
+                    <span class="text-secondary small"> / month</span>
+                  </div>
+                </div>
+
+                <a href="{% url 'order_package' %}?package_id={{ pkg.id }}" class="btn {% if pkg.is_featured %}btn-fiber-primary{% else %}btn-fiber-outline{% endif %} w-100 py-2">
+                  Select Package <i class="bi bi-chevron-right ms-1"></i>
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     Special Offers Section (Admin Manageable)
+     ========================================================================== -->
+{% if special_offers %}
+<section class="py-5" id="offers-section">
+  <div class="container py-4">
+    <div class="text-center max-w-700 mx-auto mb-5">
+      <span class="badge bg-danger text-white px-3 py-1 mb-2">LIMITED TIME PROMOTIONS</span>
+      <h2 class="display-5 fw-bold">Exclusive <span class="text-gradient-purple">Special Offers</span></h2>
+      <p class="text-secondary">Take advantage of our current broadband incentives and promotions.</p>
+    </div>
+
+    <div class="row g-4">
+      {% for offer in special_offers %}
+        <div class="col-lg-4 col-md-6">
+          <div class="glass-panel h-100 p-4 position-relative border-purple">
+            <span class="badge bg-purple-400 text-dark fw-bold px-3 py-1 mb-3">
+              {{ offer.discount_tag }}
+            </span>
+            <h4 class="text-light fw-bold mb-2">{{ offer.title }}</h4>
+            {% if offer.subtitle %}
+              <h6 class="text-cyan small mb-3">{{ offer.subtitle }}</h6>
+            {% endif %}
+            <p class="text-secondary small mb-4">{{ offer.description }}</p>
+
+            {% if offer.target_package %}
+              <div class="p-2 rounded-2 bg-dark bg-opacity-75 border border-secondary border-opacity-25 mb-3 small d-flex justify-content-between align-items-center">
+                <span class="text-secondary">Target Plan:</span>
+                <span class="text-light fw-bold">{{ offer.target_package.name }}</span>
+              </div>
+            {% endif %}
+
+            <a href="{% url 'order_package' %}{% if offer.target_package %}?package_id={{ offer.target_package.id }}{% endif %}" class="btn btn-fiber-outline w-100 py-2">
+              Claim Offer <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ==========================================================================
+     Feedback Section (Customer Reviews & Submission)
+     ========================================================================== -->
+<section class="py-5" id="feedback-section" style="background: rgba(11, 17, 32, 0.4);">
+  <div class="container py-4">
+    <div class="row g-5 align-items-center">
+      <!-- Left: Testimonials Display -->
+      <div class="col-lg-7">
+        <span class="text-cyan fw-bold text-uppercase tracking-wide small">Customer Testimonials</span>
+        <h2 class="display-5 fw-bold mt-1 mb-4">Trusted by Thousands of <span class="text-gradient-fiber">Happy Homes</span></h2>
+
+        <div class="row g-3">
+          {% for fb in feedbacks %}
+            <div class="col-md-6">
+              <div class="glass-panel p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <span class="text-warning fs-6">
+                    {% if fb.rating == 5 %}⭐⭐⭐⭐⭐{% elif fb.rating == 4 %}⭐⭐⭐⭐{% elif fb.rating == 3 %}⭐⭐⭐{% else %}⭐⭐{% endif %}
+                  </span>
+                  <small class="text-muted">{{ fb.created_at|date:"M d, Y" }}</small>
+                </div>
+                <p class="text-secondary small fst-italic mb-3">"{{ fb.message }}"</p>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="rounded-circle bg-cyan p-1 text-dark fw-bold d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; background: #38BDF8;">
+                    {{ fb.name|first|upper }}
+                  </div>
+                  <div>
+                    <h6 class="text-light mb-0 small fw-bold">{{ fb.name }}</h6>
+                    <small class="text-muted" style="font-size: 0.75rem;">Verified Subscriber</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="col-12">
+              <p class="text-secondary">Be the first to share your experience with Mehran WiFi Service!</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Right: Submit Feedback Form -->
+      <div class="col-lg-5">
+        <div class="glass-panel p-4">
+          <h4 class="text-light fw-bold mb-1">Share Your Feedback</h4>
+          <p class="text-secondary small mb-3">Help us improve our fiber internet service.</p>
+
+          <form action="{% url 'submit_feedback' %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">Your Name</label>
+              <input type="text" name="name" class="form-control" placeholder="Enter your full name" required {% if user.is_authenticated %}value="{{ user.get_full_name|default:user.username }}"{% endif %}>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email Address</label>
+              <input type="email" name="email" class="form-control" placeholder="name@example.com" required {% if user.is_authenticated %}value="{{ user.email }}"{% endif %}>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Rating</label>
+              <div class="d-flex gap-2 align-items-center p-2 rounded-2 bg-dark border border-secondary border-opacity-25">
+                <input type="hidden" name="rating" id="feedback-rating-input" value="5">
+                <button type="button" class="btn btn-link p-0 text-warning fs-4 rating-star-btn" data-val="1"><i class="bi bi-star-fill"></i></button>
+                <button type="button" class="btn btn-link p-0 text-warning fs-4 rating-star-btn" data-val="2"><i class="bi bi-star-fill"></i></button>
+                <button type="button" class="btn btn-link p-0 text-warning fs-4 rating-star-btn" data-val="3"><i class="bi bi-star-fill"></i></button>
+                <button type="button" class="btn btn-link p-0 text-warning fs-4 rating-star-btn" data-val="4"><i class="bi bi-star-fill"></i></button>
+                <button type="button" class="btn btn-link p-0 text-warning fs-4 rating-star-btn" data-val="5"><i class="bi bi-star-fill"></i></button>
+                <span class="ms-auto text-secondary small" id="rating-text-label">5 Stars (Excellent)</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Message / Experience</label>
+              <textarea name="message" class="form-control" rows="3" placeholder="Tell us about your internet speed and connectivity..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-fiber-primary w-100 py-2">
+              <i class="bi bi-send-fill"></i> Submit Feedback
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     Complaint Section (Customer Support Tickets)
+     ========================================================================== -->
+<section class="py-5" id="complaint-section">
+  <div class="container py-4">
+    <div class="max-w-800 mx-auto glass-panel p-4 p-md-5 border-cyan">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-5">
+          <span class="badge bg-warning text-dark px-3 py-1 mb-2">24/7 HELPDESK</span>
+          <h3 class="text-light fw-bold mb-2">Need Technical Support?</h3>
+          <p class="text-secondary small mb-4">
+            Facing slow speeds, red optical LOS light, or router issues? Submit an immediate ticket directly to our NOC engineering team.
+          </p>
+          <div class="p-3 rounded-3 bg-dark bg-opacity-75 border border-secondary border-opacity-25 small mb-3">
+            <div class="text-cyan fw-bold mb-1"><i class="bi bi-telephone-fill me-1"></i> Direct Hotline:</div>
+            <div class="font-monospace text-light fs-6">{{ ISP_PHONE }}</div>
+          </div>
+          <div class="p-3 rounded-3 bg-dark bg-opacity-75 border border-secondary border-opacity-25 small">
+            <div class="text-success fw-bold mb-1"><i class="bi bi-whatsapp me-1"></i> WhatsApp NOC:</div>
+            <div class="font-monospace text-light fs-6">{{ ISP_PHONE }}</div>
+          </div>
+        </div>
+
+        <div class="col-md-7">
+          <form action="{% url 'submit_complaint' %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">User Name</label>
+              <input type="text" name="user_name" class="form-control" placeholder="Enter your registered name" required {% if user.is_authenticated %}value="{{ user.get_full_name|default:user.username }}"{% endif %}>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Registered Phone Number</label>
+              <input type="text" name="phone_number" class="form-control" placeholder="e.g. 03001234567" required {% if user.is_authenticated and user.profile.phone_number %}value="{{ user.profile.phone_number }}"{% endif %}>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Complaint Subject</label>
+              <select name="subject" class="form-select" required>
+                <option value="" disabled selected>Select issue category...</option>
+                <option value="Red Optical LOS Light on Router">Red Optical LOS Light on Router</option>
+                <option value="Slow Speed / High Latency">Slow Speed / High Latency</option>
+                <option value="Frequent Disconnection">Frequent Disconnection</option>
+                <option value="Optical Fiber Drop Wire Damaged">Optical Fiber Drop Wire Damaged</option>
+                <option value="Billing / Payment Verification">Billing / Payment Verification</option>
+                <option value="Other Service Issue">Other Service Issue</option>
+              </select>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Complaint Description</label>
+              <textarea name="description" class="form-control" rows="3" placeholder="Please describe the issue in detail..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-warning w-100 py-3 fw-bold text-dark">
+              <i class="bi bi-exclamation-octagon-fill me-1"></i> Submit Complaint Ticket
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/fiber-canvas.js' %}"></script>
+{% endblock %}
