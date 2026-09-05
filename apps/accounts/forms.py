@@ -58,30 +58,6 @@ class CustomAllauthSignupForm(SignupForm):
         if 'password2' in self.fields:
             self.fields['password2'].widget.attrs.update({'placeholder': 'Confirm password', 'class': 'form-control'})
 
-    def save(self, request):
-        user = super().save(request)
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.save(update_fields=['first_name', 'last_name'])
-
-        profile, _ = UserProfile.objects.get_or_create(user=user)
-        profile.phone_number = self.cleaned_data.get('phone_number', '')
-        profile.whatsapp_number = self.cleaned_data.get('whatsapp_number', '') or profile.phone_number
-        profile.address = self.cleaned_data.get('address', '')
-        profile.save()
-        
-        # Ensure the EmailAddress created by allauth is marked as verified and primary
-        from allauth.account.models import EmailAddress
-        EmailAddress.objects.filter(user=user, email__iexact=user.email).update(verified=True, primary=True)
-
-        Notification.objects.create(
-            user=user,
-            title="👋 Welcome to Mehran WiFi Service!",
-            message="Your account has been created. Explore our fiber internet packages to get connected.",
-            link="/packages/"
-        )
-        return user
-
 
 
 

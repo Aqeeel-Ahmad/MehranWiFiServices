@@ -8,237 +8,195 @@
   <div class="text-center max-w-700 mx-auto mb-5">
     <div class="hero-tag mb-2">
       <span class="dot-beacon-green"></span>
-      <span>Step-by-Step Fiber Order Wizard</span>
+      <span>Fiber Order Setup</span>
     </div>
     <h1 class="display-5 fw-bold text-light">Purchase <span class="text-gradient-fiber">Internet Package</span></h1>
-    <p class="text-secondary">Select your date and bandwidth tier. Expiry is automatically calculated as the 8th of the next month.</p>
-  </div>
-
-  <!-- Wizard Progress Tabs -->
-  <div class="row g-2 mb-5 justify-content-center">
-    <div class="col-md-3 col-6">
-      <div class="d-flex align-items-center gap-2 p-2 rounded-3 bg-dark border border-secondary border-opacity-25">
-        <div class="wizard-step-badge">1</div>
-        <div class="small"><b class="text-light">Select Date</b><br/><span class="text-muted">Purchase Day</span></div>
-      </div>
-    </div>
-    <div class="col-md-3 col-6">
-      <div class="d-flex align-items-center gap-2 p-2 rounded-3 bg-dark border border-secondary border-opacity-25">
-        <div class="wizard-step-badge">2</div>
-        <div class="small"><b class="text-light">Choose Tier</b><br/><span class="text-muted">Speed in Mbps</span></div>
-      </div>
-    </div>
-    <div class="col-md-3 col-6">
-      <div class="d-flex align-items-center gap-2 p-2 rounded-3 bg-dark border border-secondary border-opacity-25">
-        <div class="wizard-step-badge">3</div>
-        <div class="small"><b class="text-light">Auto Expiry</b><br/><span class="text-muted">8th of Next Month</span></div>
-      </div>
-    </div>
-    <div class="col-md-3 col-6">
-      <div class="d-flex align-items-center gap-2 p-2 rounded-3 bg-dark border border-secondary border-opacity-25">
-        <div class="wizard-step-badge">4</div>
-        <div class="small"><b class="text-light">EasyPaisa Pay</b><br/><span class="text-muted">03454524086</span></div>
-      </div>
-    </div>
+    <p class="text-secondary">Select your desired bandwidth tier to proceed to payment.</p>
   </div>
 
   <form method="POST" action="{% url 'order_package' %}" enctype="multipart/form-data" id="package-order-form">
     {% csrf_token %}
-    <input type="hidden" name="package_id" id="selected-package-id" value="{% if preselected_package %}{{ preselected_package.id }}{% else %}{{ packages.0.id }}{% endif %}">
+    
+    {% for pkg in packages %}
+      {% if pkg.is_custom %}
+        <input type="hidden" name="package_id" id="selected-package-id" value="{{ pkg.id }}">
+      {% endif %}
+    {% endfor %}
+    {% if not packages.0.is_custom %}
+      <input type="hidden" name="package_id" id="selected-package-id" value="{{ packages.0.id }}">
+    {% endif %}
+    <input type="hidden" name="custom_speed" id="hidden-custom-speed" value="">
+    <input type="hidden" name="purchase_date" id="wizard-purchase-date" value="{{ today_str }}">
 
-    <div class="row g-4">
-      <!-- Left Column: Step 1 & Step 2 Selection -->
-      <div class="col-lg-7">
-        <!-- Step 1: Select Date -->
-        <div class="glass-panel p-4 mb-4">
-          <div class="d-flex align-items-center gap-2 mb-3">
-            <span class="badge bg-info text-dark fw-bold">STEP 1</span>
-            <h4 class="text-light fw-bold mb-0">Select Purchase Date</h4>
-          </div>
-          <p class="text-secondary small mb-3">
-            Choose your package start date. Today's date is pre-filled automatically.
-          </p>
-
-          <div class="row align-items-center g-3">
-            <div class="col-md-6">
-              <label class="form-label">Package Purchase Date</label>
-              <input type="date" name="purchase_date" id="wizard-purchase-date" class="form-control" value="{{ today_str }}" required>
-            </div>
-            <div class="col-md-6">
-              <div class="p-3 rounded-2 bg-dark border border-secondary border-opacity-25 small">
-                <i class="bi bi-calendar-check text-cyan me-1"></i> Billing Cycle:
-                <div class="text-light mt-1">Calculated through the <b>8th of next month</b>.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 2: Select Internet Package -->
-        <div class="glass-panel p-4">
-          <div class="d-flex align-items-center gap-2 mb-3">
-            <span class="badge bg-info text-dark fw-bold">STEP 2</span>
-            <h4 class="text-light fw-bold mb-0">Select Internet Package</h4>
-          </div>
-          <p class="text-secondary small mb-3">
-            Click on your desired speed package below to calculate pricing and expiry.
-          </p>
-
-          <div class="row g-3">
-            {% for pkg in packages %}
-              <div class="col-md-6">
-                <div class="selectable-pkg-card {% if preselected_package and preselected_package.id == pkg.id %}selected{% elif not preselected_package and forloop.first %}selected{% endif %}"
-                     data-id="{{ pkg.id }}"
-                     data-name="{{ pkg.name }}"
-                     data-speed="{{ pkg.speed_mbps }}"
-                     data-price="{{ pkg.price }}"
-                     data-is-custom="{{ pkg.is_custom|yesno:'true,false' }}">
-                  <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div>
-                      {% if pkg.is_custom %}
-                        <span class="badge bg-primary text-white mb-1">🛠️ CUSTOM (2 - 30 MB)</span>
-                        <h6 class="text-light fw-bold mb-0">Custom Fiber Plan</h6>
-                        <small class="text-secondary">Bandwidth: 2 to 30 Mbps (Self-Chosen)</small>
-                      {% else %}
-                        <h6 class="text-light fw-bold mb-0">{{ pkg.name }}</h6>
-                        <small class="text-secondary">{{ pkg.speed_mbps }} Mbps Optical Fiber</small>
-                      {% endif %}
-                    </div>
-                    {% if pkg.is_custom %}
-                      <span class="fs-4 font-monospace text-cyan fw-bold" id="card-custom-speed-badge">{{ preselected_custom_speed }}M</span>
-                    {% else %}
-                      <span class="fs-4 font-monospace text-cyan fw-bold">{{ pkg.speed_mbps }}M</span>
-                    {% endif %}
-                  </div>
-                  <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary border-opacity-25">
-                    {% if pkg.is_custom %}
-                      <span class="text-light fw-bold fs-5" id="card-custom-price-badge">Rs. {{ preselected_custom_price|floatformat:0 }}</span>
-                    {% else %}
-                      <span class="text-light fw-bold fs-5">Rs. {{ pkg.price|floatformat:0 }}</span>
-                    {% endif %}
-                    <span class="badge bg-dark text-cyan border border-info border-opacity-25">Select</span>
-                  </div>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-
-          <!-- Custom Bandwidth Slider Container (Active when Custom Package is chosen) -->
-          <div id="wizard-custom-slider-container" class="mt-4 p-3 rounded-3 bg-dark border border-cyan" style="{% if not initial_is_custom %}display: none;{% endif %}">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div>
-                <span class="badge bg-primary text-white me-2">CUSTOMIZE BANDWIDTH</span>
-                <span class="text-light fw-bold">Select Your Speed (2 to 30 Mbps)</span>
-              </div>
-              <span class="text-cyan fw-bold font-monospace fs-5">
-                <span id="wizard-slider-speed-val">{{ preselected_custom_speed }}</span> Mbps
-              </span>
-            </div>
-            
-            <p class="text-secondary small mb-3">
-              Move the slider to choose any bandwidth between 2 Mbps and 30 Mbps. The monthly price dynamically adjusts in real-time.
-            </p>
-
-            <div class="px-2">
-              <input type="range" class="form-range" min="2" max="30" step="1" 
-                     value="{{ preselected_custom_speed }}" 
-                     id="wizard-custom-speed-slider" 
-                     name="custom_speed">
-              <div class="d-flex justify-content-between small text-secondary">
-                <span><b>2 Mbps</b> (Starter - Rs. 560)</span>
-                <span><b>15 Mbps</b> (Standard)</span>
-                <span><b>30 Mbps</b> (Max - Rs. 2,800)</span>
-              </div>
-            </div>
-
-            <!-- Quick Presets -->
-            <div class="d-flex flex-wrap gap-2 mt-3 pt-2 border-top border-secondary border-opacity-25 align-items-center">
-              <span class="small text-secondary me-1">Quick Select:</span>
-              <button type="button" class="btn btn-sm btn-outline-secondary wizard-preset-btn py-0 px-2" data-speed="2">2 MB</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary wizard-preset-btn py-0 px-2" data-speed="5">5 MB</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary wizard-preset-btn py-0 px-2" data-speed="10">10 MB</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary wizard-preset-btn py-0 px-2" data-speed="15">15 MB</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary wizard-preset-btn py-0 px-2" data-speed="20">20 MB</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary wizard-preset-btn py-0 px-2" data-speed="25">25 MB</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary wizard-preset-btn py-0 px-2" data-speed="30">30 MB</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Step 3 & Step 4 Payment -->
-      <div class="col-lg-5">
-        <!-- Step 3: Automatically Calculated Price & Expiry -->
-        <div class="glass-panel p-4 mb-4 border-cyan" id="wizard-step-3">
-          <div class="d-flex align-items-center gap-2 mb-3">
-            <span class="badge bg-success text-dark fw-bold">STEP 3</span>
-            <h4 class="text-light fw-bold mb-0">Package & Expiry Summary</h4>
-          </div>
-
-          <div class="p-3 rounded-3 bg-dark bg-opacity-75 border border-secondary border-opacity-25 mb-3">
-            <div class="d-flex justify-content-between py-1 border-bottom border-secondary border-opacity-25">
-              <span class="text-secondary">Selected Package:</span>
-              <span class="text-light fw-bold" id="summary-pkg-name">
-                {{ initial_name }}
-              </span>
-            </div>
-            <div class="d-flex justify-content-between py-1 border-bottom border-secondary border-opacity-25">
-              <span class="text-secondary">Internet Speed:</span>
-              <span class="text-cyan fw-bold font-monospace" id="summary-speed">
-                {{ initial_speed }} Mbps
-              </span>
-            </div>
-            <div class="d-flex justify-content-between py-1 border-bottom border-secondary border-opacity-25">
-              <span class="text-secondary">Start Date:</span>
-              <span class="text-light" id="summary-start-date">{{ today_str }}</span>
-            </div>
-            <div class="d-flex justify-content-between py-2 align-items-center bg-cyan bg-opacity-10 px-2 rounded-2 mt-2">
-              <div>
-                <span class="text-cyan fw-bold d-block">Automatic Expiry Date:</span>
-                <small class="text-muted" style="font-size: 0.75rem;">(Calculated as 8th of next month)</small>
-              </div>
-              <span class="text-warning fw-bold fs-6 font-monospace" id="summary-expiry-date">{{ default_expiry_formatted }}</span>
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center p-3 rounded-3" style="background: rgba(56, 189, 248, 0.12); border: 1.5px solid var(--border-cyan);">
-            <span class="text-light fw-bold fs-5">Total Payable Amount:</span>
-            <span class="text-cyan fw-black fs-3 font-monospace" id="summary-price">
-              Rs. {{ initial_price|floatformat:0 }}
-            </span>
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        
+        <!-- Step 1: MB Selection Section -->
+        <div id="selection-section" class="glass-panel p-4 mb-4">
+          <h4 class="text-light fw-bold mb-4">Select Internet Speed</h4>
+          <div class="mb-2">
+            <label class="form-label text-light fw-bold">Speed (MB)</label>
+            <select class="form-select form-select-lg" id="mb-dropdown">
+              <option value="" selected disabled>-- Choose Speed --</option>
+              {% for i in "x"|ljust:"29" %}
+                <option value="{{ forloop.counter|add:1 }}">{{ forloop.counter|add:1 }} Mbps</option>
+              {% endfor %}
+            </select>
           </div>
         </div>
 
-        <!-- Step 4: EasyPaisa Payment Method -->
-        <div class="easypaisa-box p-4">
+        <!-- Step 2: Payment Section (Hidden Initially) -->
+        <div id="payment-section" class="easypaisa-box p-4" style="display: none; animation: fadeIn 0.4s ease-in-out;">
           <div class="d-flex align-items-center justify-content-between mb-3">
-            <div class="d-flex align-items-center gap-2">
-              <span class="badge bg-success text-white fw-bold">STEP 4</span>
-              <h4 class="text-light fw-bold mb-0">Payment Method</h4>
-            </div>
-            <span class="badge bg-success text-white px-2 py-1">Official EasyPaisa</span>
+            <h4 class="text-light fw-bold mb-0">Payment Method</h4>
+            <span class="badge bg-success text-white px-2 py-1">EasyPaisa</span>
           </div>
-
-          <div class="p-3 rounded-3 bg-dark border border-success mb-3 text-center">
+          <div class="p-3 rounded-3 bg-dark border border-success mb-4 text-center">
             <small class="text-secondary d-block mb-1">Official Receiver EasyPaisa Account</small>
             <div class="easypaisa-number-display mb-1 text-success fw-bold font-monospace fs-4">03454524086</div>
             <div class="text-light small">Account Title: <b>Mehran WiFi Service</b></div>
           </div>
-
-          <div class="alert alert-dark bg-dark bg-opacity-75 border-secondary border-opacity-25 text-secondary small mb-4">
-            <i class="bi bi-shield-check text-cyan me-1"></i>
-            Clicking below will transfer you to the secure <b>EasyPaisa Gateway</b> page with complete payment instructions. After transferring, you will submit your TRX ID to activate your package.
-          </div>
-
           <button type="submit" class="btn btn-easypaisa w-100 py-3 fs-5 shadow">
             <i class="bi bi-wallet2 me-2"></i> Confirm Payment <i class="bi bi-arrow-right ms-1"></i>
           </button>
         </div>
+
       </div>
     </div>
+
+    <!-- SUMMARY POPUP MODAL -->
+    <div class="modal fade" id="summaryModal" tabindex="-1" aria-labelledby="summaryModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark border-cyan">
+          <div class="modal-header border-bottom border-secondary border-opacity-25">
+            <h5 class="modal-title text-light fw-bold" id="summaryModalLabel">Billing Summary</h5>
+          </div>
+          <div class="modal-body p-4">
+            <div class="d-flex flex-column gap-3 mb-4">
+              <div class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25 pb-2">
+                <span class="text-secondary fw-medium">Selected Speed</span>
+                <span class="text-cyan fw-bold fs-5 font-monospace" id="modal-speed">--</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center border-bottom border-secondary border-opacity-25 pb-2">
+                <span class="text-secondary fw-medium">Expiry Date</span>
+                <span class="text-light fw-bold" id="modal-expiry">{{ default_expiry_formatted }}</span>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-2 p-3 rounded-3" style="background: rgba(56, 189, 248, 0.12); border: 1.5px solid var(--border-cyan);">
+              <span class="text-light fw-bold fs-5">Total Payment</span>
+              <span class="text-cyan fw-black fs-3 font-monospace" id="modal-price">--</span>
+            </div>
+          </div>
+          <div class="modal-footer border-top border-secondary border-opacity-25 row g-2 m-0 p-3">
+            <div class="col-6 m-0 pr-1">
+              <button type="button" class="btn btn-outline-secondary w-100 py-2" id="modal-btn-cancel">
+                <i class="bi bi-x-circle me-1"></i> Cancel
+              </button>
+            </div>
+            <div class="col-6 m-0 pl-1">
+              <button type="button" class="btn btn-cyan text-dark fw-bold w-100 py-2" id="modal-btn-proceed">
+                Proceed <i class="bi bi-arrow-right ms-1"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </form>
 </div>
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="{% static 'js/package-wizard.js' %}"></script>
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<!-- Inline JS to guarantee no browser caching issues for the user -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const mbDropdown = document.getElementById('mb-dropdown');
+  const hiddenCustomSpeedInput = document.getElementById('hidden-custom-speed');
+  const dateInput = document.getElementById('wizard-purchase-date');
+  
+  const selectionSection = document.getElementById('selection-section');
+  const paymentSection = document.getElementById('payment-section');
+
+  const modalSpeed = document.getElementById('modal-speed');
+  const modalPrice = document.getElementById('modal-price');
+  const modalExpiry = document.getElementById('modal-expiry');
+
+  const btnCancel = document.getElementById('modal-btn-cancel');
+  const btnProceed = document.getElementById('modal-btn-proceed');
+
+  // Initialize Bootstrap Modal
+  const summaryModal = new bootstrap.Modal(document.getElementById('summaryModal'));
+
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  function calculatePrice(speedMb) {
+    const speed = Math.max(2, Math.min(30, parseInt(speedMb || 10, 10)));
+    return 400 + (speed * 80);
+  }
+
+  function calculateExpiryFromDateStr(dateStr) {
+    if (!dateStr) return { formatted: '' };
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return { formatted: '' };
+
+    let year = parseInt(parts[0], 10);
+    let month = parseInt(parts[1], 10);
+    let nextMonth = month + 1;
+    let nextYear = year;
+    if (nextMonth > 12) {
+      nextMonth = 1;
+      nextYear += 1;
+    }
+    return { formatted: `${monthNames[nextMonth - 1]} 08, ${nextYear}` };
+  }
+
+  if (mbDropdown) {
+    mbDropdown.addEventListener('change', function() {
+      const speed = this.value;
+      if (!speed) return;
+
+      hiddenCustomSpeedInput.value = speed;
+      
+      const price = calculatePrice(speed);
+      modalSpeed.textContent = speed + ' Mbps';
+      modalPrice.textContent = 'Rs. ' + price.toLocaleString();
+      
+      if (dateInput) {
+        modalExpiry.textContent = calculateExpiryFromDateStr(dateInput.value).formatted;
+      }
+
+      // Show the popup Modal!
+      summaryModal.show();
+    });
+  }
+
+  if (btnCancel) {
+    btnCancel.addEventListener('click', function() {
+      summaryModal.hide();
+      mbDropdown.value = '';
+      hiddenCustomSpeedInput.value = '';
+      selectionSection.style.display = 'block';
+      paymentSection.style.display = 'none';
+    });
+  }
+
+  if (btnProceed) {
+    btnProceed.addEventListener('click', function() {
+      summaryModal.hide();
+      selectionSection.style.display = 'none';
+      paymentSection.style.display = 'block';
+    });
+  }
+});
+</script>
 {% endblock %}

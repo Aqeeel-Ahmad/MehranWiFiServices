@@ -32,6 +32,7 @@ urlpatterns = [
 
     # Allauth and App Namespaces
     path('accounts/', include('allauth.urls')),
+    path('_allauth/', include('allauth.headless.urls')),
     path('payments/', include('apps.payments.urls')),
     path('complaints/', include('apps.complaints.urls')),
     path('notifications/', include('apps.notifications.urls')),

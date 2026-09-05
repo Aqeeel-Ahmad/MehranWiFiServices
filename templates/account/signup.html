@@ -17,12 +17,27 @@
             <p class="text-secondary small">Join Mehran WiFi Service and experience lightning-speed fiber broadband.</p>
           </div>
 
-          <form method="POST" action="{% url 'account_signup' %}">
+          <div class="mb-4">
+            {% load socialaccount %}
+            <a href="{% provider_login_url 'google' %}" class="btn btn-outline-light w-100 py-2 shadow-sm d-flex align-items-center justify-content-center border-secondary">
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" style="width: 20px; height: 20px;" class="me-2">
+              Sign Up with Google
+            </a>
+            <div class="d-flex align-items-center my-3">
+              <div class="flex-grow-1 border-bottom border-secondary opacity-50"></div>
+              <span class="px-3 text-secondary small">or register with email</span>
+              <div class="flex-grow-1 border-bottom border-secondary opacity-50"></div>
+            </div>
+          </div>
+
+          <form id="headless-signup-form" method="POST" action="{% url 'account_signup' %}">
             {% csrf_token %}
 
             {% if redirect_field_value %}
-              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" id="redirect-input" />
             {% endif %}
+
+            <div id="form-error-alert" class="alert alert-danger p-3 mb-3 small d-none"></div>
 
             {% if form.errors %}
               <div class="alert alert-danger p-3 mb-3 small">
@@ -81,7 +96,7 @@
               </div>
             </div>
 
-            <button type="submit" class="btn btn-fiber-primary w-100 py-3 fs-5 mb-4 shadow">
+            <button type="submit" id="submit-btn" class="btn btn-fiber-primary w-100 py-3 fs-5 mb-4 shadow">
               <i class="bi bi-check-circle-fill me-2"></i> Complete Registration &amp; Log In
             </button>
 
@@ -101,4 +116,95 @@
 
 {% block extra_scripts %}
 <script src="{% static 'js/fiber-canvas.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('headless-signup-form');
+  const errorAlert = document.getElementById('form-error-alert');
+  const submitBtn = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    errorAlert.classList.add('d-none');
+    errorAlert.innerHTML = '';
+    
+    // Disable button to prevent double submission
+    const originalBtnHTML = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...';
+    submitBtn.disabled = true;
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    // Headless API expects 'password', not 'password1'/'password2'
+    if (data.password1) {
+      data.password = data.password1;
+      // Headless API might still validate 'password2' if custom form logic requires it, but the base allauth headless expects 'password'.
+      // If CustomAllauthSignupForm expects password1 and password2, they are already present in the data object.
+    }
+
+    // Headless API requires CSRF Token in Header
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    fetch('/_allauth/browser/v1/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken,
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        return response.json().then(data => ({status: response.status, body: data}));
+      } else {
+        return response.text().then(text => {
+          if (response.status === 403 && text.includes('CSRF')) {
+            throw new Error('CSRF_FAILED');
+          }
+          throw new Error('NON_JSON_RESPONSE');
+        });
+      }
+    })
+    .then(result => {
+      if (result.status === 200 || result.status === 401 && result.body.meta.is_authenticated === true) {
+        // Success
+        const redirectInput = document.getElementById('redirect-input');
+        if (redirectInput && redirectInput.value) {
+          window.location.href = redirectInput.value;
+        } else {
+          window.location.href = '/dashboard/';
+        }
+      } else {
+        // Error handling
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHTML;
+        
+        let errorHtml = '<b>Registration Failed:</b><br/>';
+        if (result.body && result.body.errors && result.body.errors.length > 0) {
+          result.body.errors.forEach(err => {
+            errorHtml += `<div>- ${err.message || 'Invalid input.'}</div>`;
+          });
+        } else {
+          errorHtml += 'An unexpected error occurred. Please try again.';
+        }
+        errorAlert.innerHTML = errorHtml;
+        errorAlert.classList.remove('d-none');
+      }
+    })
+    .catch(error => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHTML;
+      if (error.message === 'CSRF_FAILED') {
+        errorAlert.innerHTML = '<b>Security Token Expired:</b><br/>Your session was rotated (likely because you logged in or out in another tab). Please refresh the page and try again.';
+      } else {
+        errorAlert.innerHTML = 'Network error or invalid response. Please refresh the page and try again.';
+      }
+      errorAlert.classList.remove('d-none');
+      console.error('Error:', error);
+    });
+  });
+});
+</script>
 {% endblock %}

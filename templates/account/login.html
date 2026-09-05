@@ -18,6 +18,20 @@
             <p class="text-secondary small">Access your fiber package dashboard, renewals and receipts.</p>
           </div>
 
+          <!-- Google Login -->
+          <div class="mb-4">
+            {% load socialaccount %}
+            <a href="{% provider_login_url 'google' %}" class="btn btn-outline-light w-100 py-2 shadow-sm d-flex align-items-center justify-content-center border-secondary">
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" style="width: 20px; height: 20px;" class="me-2">
+              Log In with Google
+            </a>
+            <div class="d-flex align-items-center my-3">
+              <div class="flex-grow-1 border-bottom border-secondary opacity-50"></div>
+              <span class="px-3 text-secondary small">or log in with email</span>
+              <div class="flex-grow-1 border-bottom border-secondary opacity-50"></div>
+            </div>
+          </div>
+
           <!-- Allauth Login Form -->
           <form method="POST" action="{% url 'account_login' %}">
             {% csrf_token %}

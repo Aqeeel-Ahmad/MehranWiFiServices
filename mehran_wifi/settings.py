@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     # Django Allauth
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.headless',
 
     # Local Apps
     'apps.core.apps.CoreConfig',
@@ -184,14 +187,39 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_REDIRECT_URL = 'dashboard'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
+ACCOUNT_ADAPTER = 'apps.accounts.adapter.CustomAccountAdapter'
 ACCOUNT_FORMS = {
     'signup': 'apps.accounts.forms.CustomAllauthSignupForm',
     'login': 'apps.accounts.forms.CustomAllauthLoginForm',
 }
 
+# Headless API Configuration
+HEADLESS_ONLY = False
+HEADLESS_FRONTEND_URLS = {
+    'fallback': 'http://127.0.0.1:8000/',
+}
+
+# Social Account Providers
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID', 'placeholder_client_id'),
+            'secret': os.environ.get('GOOGLE_CLIENT_SECRET', 'placeholder_secret'),
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
 # Session & Cookie Persistence Settings
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-SESSION_COOKIE_AGE = 1209600  # 14 days
+SESSION_COOKIE_AGE = 86400  # 24 hours (1 day)
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
