@@ -4,6 +4,7 @@ Mehran WiFi Service - Modern Fiber ISP Platform
 """
 
 import os
+import shutil
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,10 +74,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mehran_wifi.wsgi.application'
 
+# Database Configuration (Serverless / Read-Only Safe)
+if 'VERCEL' in os.environ:
+    tmp_db = Path('/tmp/db.sqlite3')
+    orig_db = BASE_DIR / 'db.sqlite3'
+    if not tmp_db.exists() and orig_db.exists():
+        try:
+            shutil.copy2(orig_db, tmp_db)
+        except Exception:
+            pass
+    DB_PATH = tmp_db if tmp_db.exists() else orig_db
+else:
+    DB_PATH = BASE_DIR / 'db.sqlite3'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DB_PATH,
     }
 }
 
@@ -101,7 +115,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATIC_ROOT.mkdir(parents=True, exist_ok=True)
 
 # Enable WhiteNoise finders so all static assets are served reliably in serverless environments
 WHITENOISE_USE_FINDERS = True
@@ -116,7 +129,14 @@ STORAGES = {
 }
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+if 'VERCEL' in os.environ:
+    MEDIA_ROOT = Path('/tmp/media')
+    try:
+        MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        pass
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
