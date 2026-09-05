@@ -4,9 +4,12 @@ import os
 import sys
 
 
+# Set default settings module at module level for Vercel / serverless detection
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mehran_wifi.settings')
+
+
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mehran_wifi.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
