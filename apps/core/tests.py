@@ -8,7 +8,7 @@ from apps.payments.models import Payment
 from apps.payments.pdf_generator import generate_receipt_pdf, generate_history_pdf
 from apps.accounts.models import UserProfile
 
-class HAM 3WiFiPlatformTests(TestCase):
+class Ham3WiFiPlatformTests(TestCase):
     def setUp(self):
         self.client = Client()
 
