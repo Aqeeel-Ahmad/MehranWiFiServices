@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 90" width="100%" height="100%">
+  <defs>
+    <linearGradient id="fiberGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7" />
+      <stop offset="50%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+    <linearGradient id="purpleGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#DB2777" />
+    </linearGradient>
+    <filter id="glowLight" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fiber Optical Emblem -->
+  <g transform="translate(10, 12)">
+    <!-- Outer glow pulse circle -->
+    <circle cx="34" cy="34" r="32" fill="none" stroke="url(#fiberGradLight)" stroke-width="2" opacity="0.4" stroke-dasharray="6,4" />
+    <!-- Center fiber hub -->
+    <circle cx="34" cy="34" r="26" fill="#F0F9FF" stroke="url(#fiberGradLight)" stroke-width="2" />
+    <!-- WiFi wave arcs with optical dots -->
+    <path d="M 18 22 A 22 22 0 0 1 50 22" fill="none" stroke="#0284C7" stroke-width="3" stroke-linecap="round" filter="url(#glowLight)"/>
+    <path d="M 23 28 A 15 15 0 0 1 45 28" fill="none" stroke="#0EA5E9" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 28 34 A 8 8 0 0 1 40 34" fill="none" stroke="#6366F1" stroke-width="3" stroke-linecap="round"/>
+    <!-- Center glowing optical core -->
+    <circle cx="34" cy="42" r="4.5" fill="#0284C7" filter="url(#glowLight)"/>
+    <!-- Orbiting light photon -->
+    <circle cx="58" cy="22" r="3" fill="#DB2777" filter="url(#glowLight)"/>
+  </g>
+
+  <!-- Typography: HAM 3 NETWORK -->
+  <g transform="translate(90, 20)">
+    <!-- Brand Title -->
+    <text x="0" y="30" font-family="'Outfit', 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif" font-size="28" font-weight="900" letter-spacing="2" fill="#0F172A">
+      HAM 3 <tspan fill="url(#fiberGradLight)">WIFI</tspan>
+    </text>
+    <!-- Subtitle / Tagline -->
+    <text x="2" y="48" font-family="'Inter', -apple-system, sans-serif" font-size="10.5" font-weight="700" letter-spacing="4" fill="#0284C7">
+      FIBER OPTIC INTERNET SERVICE
+    </text>
+  </g>
+</svg>
