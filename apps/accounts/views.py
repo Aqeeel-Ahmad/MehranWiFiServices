@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
+from .models import UserProfile
 from .forms import UserRegisterForm, UserLoginForm, UserProfileUpdateForm
 from apps.packages.models import PackageSubscription
 from apps.payments.models import Payment
@@ -21,8 +22,8 @@ def register_view(request):
             user.set_password(form.cleaned_data['password'])
             user.save()
 
-            # Save profile details
-            profile = user.profile
+            # Save profile details safely
+            profile, _ = UserProfile.objects.get_or_create(user=user)
             profile.phone_number = form.cleaned_data.get('phone_number', '')
             profile.whatsapp_number = form.cleaned_data.get('whatsapp_number', '') or profile.phone_number
             profile.address = form.cleaned_data.get('address', '')
@@ -37,7 +38,7 @@ def register_view(request):
             )
 
             # Auto-login after registration
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, f"Welcome to Mehran WiFi Service, {user.username}! Your account has been created.")
             return redirect('dashboard')
     else:

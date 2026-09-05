@@ -14,6 +14,12 @@ class UserAdmin(BaseUserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'get_phone', 'is_staff', 'date_joined')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'date_joined')
 
+    def get_inline_instances(self, request, obj=None):
+        # Do not include inlines when adding a new user to prevent ManagementForm validation errors
+        if not obj:
+            return []
+        return super().get_inline_instances(request, obj)
+
     def get_phone(self, obj):
         return getattr(obj, 'profile', None).phone_number if hasattr(obj, 'profile') else '-'
     get_phone.short_description = 'Phone'

@@ -213,3 +213,36 @@ class MehranWiFiPlatformTests(TestCase):
         self.assertEqual(payment.subscription.price_snapshot, Decimal('1840.00'))
         self.assertEqual(payment.subscription.expiry_date, datetime.date(2026, 10, 8))
 
+    def test_user_registration_and_admin_user_creation(self):
+        """Verify new users can register via frontend and can be added via Django Admin without errors."""
+        # 1. Frontend user registration
+        reg_resp = self.client.post('/register/', {
+            'first_name': 'Hassan',
+            'last_name': 'Ali',
+            'username': 'hassan_ali',
+            'email': 'hassan@mehranwifi.com',
+            'phone_number': '03011223344',
+            'whatsapp_number': '03011223344',
+            'address': 'House 45, Optical Street, Mehran City',
+            'password': 'Password123!',
+            'password_confirm': 'Password123!',
+        }, follow=True)
+        self.assertEqual(reg_resp.status_code, 200)
+        hassan = User.objects.filter(username='hassan_ali').first()
+        self.assertIsNotNone(hassan)
+        self.assertEqual(hassan.profile.phone_number, '03011223344')
+
+        # 2. Admin user creation (/admin/auth/user/add/)
+        self.client.force_login(self.admin)
+        admin_add_resp = self.client.post('/admin/auth/user/add/', {
+            'username': 'admin_created_customer',
+            'password1': 'AdminStrongPass123!',
+            'password2': 'AdminStrongPass123!',
+            '_save': 'Save',
+        }, follow=True)
+        self.assertEqual(admin_add_resp.status_code, 200)
+        admin_created = User.objects.filter(username='admin_created_customer').first()
+        self.assertIsNotNone(admin_created)
+        self.assertTrue(hasattr(admin_created, 'profile'))
+
+
