@@ -218,7 +218,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # Session & Cookie Persistence Settings
-SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 86400  # 24 hours (1 day)
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_COOKIE_HTTPONLY = True
