@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}User Dashboard | Mehran WiFi Service{% endblock %}
+{% block title %}User Dashboard | HAM 3 NETWORK{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -151,7 +151,7 @@
         <!-- Total Spent Card -->
         <div class="glass-panel p-4 flex-grow-1">
           <div class="d-flex align-items-center justify-content-between mb-2">
-            <span class="text-secondary small">Total Spent with Mehran</span>
+            <span class="text-secondary small">Total Spent with HAM 3</span>
             <div class="p-2 rounded-2 bg-success bg-opacity-20 text-success"><i class="bi bi-wallet2"></i></div>
           </div>
           <h3 class="text-light fw-bold font-monospace mb-1">Rs. {{ total_spent|floatformat:0 }}</h3>
@@ -293,7 +293,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content glass-panel border-cyan text-light">
       <div class="modal-header border-secondary border-opacity-25">
-        <h5 class="modal-title fw-bold">Report an Issue to Mehran NOC</h5>
+        <h5 class="modal-title fw-bold">Report an Issue to HAM 3 NOC</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form action="{% url 'submit_complaint' %}" method="POST">

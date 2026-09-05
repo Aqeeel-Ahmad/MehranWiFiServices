@@ -34,11 +34,11 @@
     <circle cx="58" cy="22" r="3" fill="#EC4899" filter="url(#glow)"/>
   </g>
 
-  <!-- Typography: MEHRAN WIFI SERVICE -->
+  <!-- Typography: HAM 3 NETWORK -->
   <g transform="translate(90, 20)">
     <!-- Brand Title -->
     <text x="0" y="30" font-family="'Outfit', 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif" font-size="28" font-weight="900" letter-spacing="2" fill="#FFFFFF">
-      MEHRAN <tspan fill="url(#fiberGrad)">WIFI</tspan>
+      HAM 3 <tspan fill="url(#fiberGrad)">WIFI</tspan>
     </text>
     <!-- Subtitle / Tagline -->
     <text x="2" y="48" font-family="'Inter', -apple-system, sans-serif" font-size="10.5" font-weight="700" letter-spacing="4" fill="#38BDF8">

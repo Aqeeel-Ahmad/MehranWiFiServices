@@ -1,6 +1,6 @@
 """
 Django settings for mehran_wifi project.
-Mehran WiFi Service - Modern Fiber ISP Platform
+HAM 3 NETWORK - Modern Fiber ISP Platform
 """
 
 import os
@@ -229,11 +229,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'support@mehranwifi.com'
 SERVER_EMAIL = 'admin@mehranwifi.com'
 
-# Mehran WiFi Service Constants
-EASYPAISA_NUMBER = '03454524086'
-EASYPAISA_ACCOUNT_NAME = 'Mehran WiFi Service'
-ISP_NAME = 'MEHRAN WIFI SERVICE'
+# HAM 3 NETWORK Constants
+EASYPAISA_NUMBER = '03452524086'
+EASYPAISA_ACCOUNT_NAME = 'HAM 3 NETWORK'
+ISP_NAME = 'HAM 3 NETWORK'
 ISP_TAGLINE = 'Fast, Reliable & Unlimited Fiber Internet'
-ISP_PHONE = '03454524086'
+ISP_PHONE = '03452524086'
 ISP_EMAIL = 'support@mehranwifi.com'
 ISP_ADDRESS = 'Main Optical Fiber Hub, Mehran City, Pakistan'

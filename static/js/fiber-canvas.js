@@ -1,5 +1,5 @@
 /**
- * Mehran WiFi Service - Interactive Fiber Optic Canvas Animation
+ * HAM 3 NETWORK - Interactive Fiber Optic Canvas Animation
  * Adapts seamlessly to Light Mode (default) and Dark Cyber Mode.
  */
 document.addEventListener('DOMContentLoaded', () => {

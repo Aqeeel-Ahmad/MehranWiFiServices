@@ -22,7 +22,7 @@ class Payment(models.Model):
     )
     amount = models.DecimalField(max_digits=10, decimal_places=2, help_text="Payment amount in PKR")
     payment_method = models.CharField(max_length=50, default='EasyPaisa')
-    easypaisa_number = models.CharField(max_length=20, default='03454524086')
+    easypaisa_number = models.CharField(max_length=20, default='03452524086')
     sender_number = models.CharField(max_length=20, blank=True, help_text="Customer EasyPaisa sender phone number")
     transaction_id = models.CharField(max_length=100, help_text="EasyPaisa Transaction ID (TRX ID)")
     payment_screenshot = models.ImageField(upload_to='payments/screenshots/', blank=True, null=True)

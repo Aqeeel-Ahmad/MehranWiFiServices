@@ -1,5 +1,5 @@
 /**
- * Mehran WiFi Service - SPA Package Wizard
+ * HAM 3 NETWORK - SPA Package Wizard
  * Manages the sequential flow of MB Selection -> Summary Popup -> Payment.
  */
 document.addEventListener('DOMContentLoaded', () => {

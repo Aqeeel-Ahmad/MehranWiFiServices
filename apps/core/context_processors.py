@@ -20,13 +20,13 @@ def site_settings(request):
             active_sub = None
 
     return {
-        'ISP_NAME': getattr(settings, 'ISP_NAME', 'MEHRAN WIFI SERVICE'),
+        'ISP_NAME': getattr(settings, 'ISP_NAME', 'HAM 3 NETWORK'),
         'ISP_TAGLINE': getattr(settings, 'ISP_TAGLINE', 'Fast, Reliable & Unlimited Fiber Internet'),
-        'ISP_PHONE': getattr(settings, 'ISP_PHONE', '03454524086'),
+        'ISP_PHONE': getattr(settings, 'ISP_PHONE', '03452524086'),
         'ISP_EMAIL': getattr(settings, 'ISP_EMAIL', 'support@mehranwifi.com'),
         'ISP_ADDRESS': getattr(settings, 'ISP_ADDRESS', 'Main Optical Fiber Hub, Mehran City, Pakistan'),
-        'EASYPAISA_NUMBER': getattr(settings, 'EASYPAISA_NUMBER', '03454524086'),
-        'EASYPAISA_ACCOUNT_NAME': getattr(settings, 'EASYPAISA_ACCOUNT_NAME', 'Mehran WiFi Service'),
+        'EASYPAISA_NUMBER': getattr(settings, 'EASYPAISA_NUMBER', '03452524086'),
+        'EASYPAISA_ACCOUNT_NAME': getattr(settings, 'EASYPAISA_ACCOUNT_NAME', 'HAM 3 NETWORK'),
         'unread_notifications_count': unread_count,
         'user_active_subscription': active_sub,
     }

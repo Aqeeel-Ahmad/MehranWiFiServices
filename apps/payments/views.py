@@ -20,8 +20,8 @@ def easypaisa_gateway_view(request, subscription_id):
 
     context = {
         'subscription': subscription,
-        'easypaisa_number': '03454524086',
-        'easypaisa_account_name': 'Mehran WiFi Service',
+        'easypaisa_number': '03452524086',
+        'easypaisa_account_name': 'HAM 3 NETWORK',
         'amount': subscription.price_snapshot,
         'pkg_name': subscription.package_name_snapshot or (subscription.package.name if subscription.package else "Fiber Plan"),
         'speed': subscription.speed_snapshot or (subscription.package.speed_mbps if subscription.package else ""),
@@ -53,7 +53,7 @@ def activate_package_view(request, subscription_id):
                 subscription=subscription,
                 amount=subscription.price_snapshot,
                 payment_method='EasyPaisa',
-                easypaisa_number='03454524086',
+                easypaisa_number='03452524086',
                 sender_number=sender_number or getattr(request.user.profile, 'phone_number', ''),
                 transaction_id=transaction_id,
                 payment_screenshot=screenshot,
@@ -82,8 +82,8 @@ def activate_package_view(request, subscription_id):
 
     context = {
         'subscription': subscription,
-        'easypaisa_number': '03454524086',
-        'easypaisa_account_name': 'Mehran WiFi Service',
+        'easypaisa_number': '03452524086',
+        'easypaisa_account_name': 'HAM 3 NETWORK',
         'amount': subscription.price_snapshot,
         'pkg_name': subscription.package_name_snapshot or (subscription.package.name if subscription.package else "Fiber Plan"),
         'speed': subscription.speed_snapshot or (subscription.package.speed_mbps if subscription.package else ""),
@@ -107,14 +107,14 @@ def receipt_view(request, payment_id):
     purchase_date_str = sub.purchase_date.strftime('%B %d, %Y') if sub and sub.purchase_date else payment.payment_date.strftime('%B %d, %Y')
 
     # Admin WhatsApp message for direct verification
-    admin_wa_phone = '923454524086'
+    admin_wa_phone = '923452524086'
     admin_wa_message = (
-        f"🟢 *MEHRAN WIFI SERVICE - PAYMENT PROOF*\n"
+        f"🟢 *HAM 3 NETWORK - PAYMENT PROOF*\n"
         f"Receipt #: {payment.receipt_number}\n"
         f"Customer: {payment.user.get_full_name() or payment.user.username} (ID: #{payment.user.id})\n"
         f"Package: {pkg_name} ({speed} Mbps)\n"
         f"Amount: Rs. {payment.amount:,.0f}\n"
-        f"EasyPaisa Number: 03454524086\n"
+        f"EasyPaisa Number: 03452524086\n"
         f"TRX ID: {payment.transaction_id}\n"
         f"Sender Number: {payment.sender_number}\n"
         f"Status: Your package is being activated. Please wait.\n\n"
@@ -124,7 +124,7 @@ def receipt_view(request, payment_id):
 
     # Customer WhatsApp share message
     wa_message = (
-        f"📄 *MEHRAN WIFI SERVICE - DIGITAL RECEIPT*\n"
+        f"📄 *HAM 3 NETWORK - DIGITAL RECEIPT*\n"
         f"Receipt #: {payment.receipt_number}\n"
         f"Customer: {payment.user.get_full_name() or payment.user.username}\n"
         f"Package: {pkg_name} ({speed} Mbps)\n"
@@ -133,7 +133,7 @@ def receipt_view(request, payment_id):
         f"Expiry Date: {expiry_date_str}\n"
         f"TRX ID: {payment.transaction_id}\n"
         f"Status: {payment.get_verification_status_display()}\n"
-        f"Mehran WiFi Service Hotline: 03454524086"
+        f"HAM 3 NETWORK Hotline: 03452524086"
     )
     wa_encoded = urllib.parse.quote(wa_message)
     user_phone = getattr(payment.user.profile, 'whatsapp_number', None) or getattr(payment.user.profile, 'phone_number', '')
@@ -165,7 +165,7 @@ def download_receipt_pdf_view(request, payment_id):
 
     pdf_data = generate_receipt_pdf(payment)
     response = HttpResponse(pdf_data, content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="MehranWiFi_Receipt_{payment.receipt_number}.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="HAM 3WiFi_Receipt_{payment.receipt_number}.pdf"'
     return response
 
 
@@ -184,10 +184,10 @@ def send_receipt_email_view(request, payment_id):
     speed = sub.speed_snapshot if sub else "N/A"
     expiry_str = sub.expiry_date.strftime('%B %d, %Y') if sub and sub.expiry_date else "8th of next month"
 
-    subject = f"Mehran WiFi Service - Payment Receipt #{payment.receipt_number}"
+    subject = f"HAM 3 NETWORK - Payment Receipt #{payment.receipt_number}"
     body = f"""Dear {payment.user.get_full_name() or payment.user.username},
 
-Thank you for your payment to Mehran WiFi Service.
+Thank you for your payment to HAM 3 NETWORK.
 
 Here are your payment and subscription details:
 --------------------------------------------------
@@ -202,10 +202,10 @@ Payment Status : {payment.get_verification_status_display()}
 --------------------------------------------------
 
 If your payment is pending verification, our team will activate your package shortly.
-For support, call or WhatsApp: 03454524086.
+For support, call or WhatsApp: 03452524086.
 
 Warm regards,
-Mehran WiFi Service Team
+HAM 3 NETWORK Team
 support@mehranwifi.com
 """
 
@@ -253,5 +253,5 @@ def download_history_pdf_view(request):
 
     pdf_data = generate_history_pdf(user, subscriptions)
     response = HttpResponse(pdf_data, content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="MehranWiFi_AccountHistory_{user.username}.pdf"'
+    response['Content-Disposition'] = f'attachment; filename="HAM 3WiFi_AccountHistory_{user.username}.pdf"'
     return response

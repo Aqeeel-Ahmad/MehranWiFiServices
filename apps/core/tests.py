@@ -8,7 +8,7 @@ from apps.payments.models import Payment
 from apps.payments.pdf_generator import generate_receipt_pdf, generate_history_pdf
 from apps.accounts.models import UserProfile
 
-class MehranWiFiPlatformTests(TestCase):
+class HAM 3WiFiPlatformTests(TestCase):
     def setUp(self):
         self.client = Client()
 
@@ -67,7 +67,7 @@ class MehranWiFiPlatformTests(TestCase):
         for url in ['/', '/packages/', '/about/', '/contact/', '/login/', '/register/']:
             response = self.client.get(url)
             self.assertEqual(response.status_code, 200, f"Failed on {url}")
-            self.assertContains(response, 'Mehran')
+            self.assertContains(response, 'HAM 3')
 
     def test_allauth_user_registration_login_logout_sessions(self):
         """
@@ -82,7 +82,7 @@ class MehranWiFiPlatformTests(TestCase):
             'email': 'ahmad@example.com',
             'phone_number': '03451122334',
             'whatsapp_number': '03451122334',
-            'address': 'Main Optical Fiber Lane, Mehran',
+            'address': 'Main Optical Fiber Lane, HAM 3',
             'password1': 'StrongPass123!',
             'password2': 'StrongPass123!',
         }
@@ -148,8 +148,8 @@ class MehranWiFiPlatformTests(TestCase):
         gateway_resp = self.client.get(expected_gateway_url)
         self.assertEqual(gateway_resp.status_code, 200)
         # Verify EasyPaisa admin account and details are automatically displayed
-        self.assertContains(gateway_resp, '03454524086')
-        self.assertContains(gateway_resp, 'Mehran WiFi Service')
+        self.assertContains(gateway_resp, '03452524086')
+        self.assertContains(gateway_resp, 'HAM 3 NETWORK')
         self.assertContains(gateway_resp, '2000')
 
         # 3. User clicks Return to Website / Activate Package screen
@@ -172,7 +172,7 @@ class MehranWiFiPlatformTests(TestCase):
 
         # 6. Verify required message and admin WhatsApp link
         self.assertContains(activate_post, 'Your package is being activated. Please wait.')
-        self.assertContains(activate_post, '03454524086')
+        self.assertContains(activate_post, '03452524086')
         self.assertContains(activate_post, 'Share Proof with Admin on WhatsApp')
 
     def test_payment_verification_and_activation(self):

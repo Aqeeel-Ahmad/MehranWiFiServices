@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('receipt_number', models.CharField(blank=True, max_length=50, unique=True)),
                 ('amount', models.DecimalField(decimal_places=2, help_text='Payment amount in PKR', max_digits=10)),
                 ('payment_method', models.CharField(default='EasyPaisa', max_length=50)),
-                ('easypaisa_number', models.CharField(default='03454524086', max_length=20)),
+                ('easypaisa_number', models.CharField(default='03452524086', max_length=20)),
                 ('sender_number', models.CharField(blank=True, help_text='Customer EasyPaisa sender phone number', max_length=20)),
                 ('transaction_id', models.CharField(help_text='EasyPaisa Transaction ID (TRX ID)', max_length=100)),
                 ('payment_screenshot', models.ImageField(blank=True, null=True, upload_to='payments/screenshots/')),

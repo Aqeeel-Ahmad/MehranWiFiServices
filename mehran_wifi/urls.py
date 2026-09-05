@@ -4,8 +4,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 # Custom Admin Site Branding
-admin.site.site_header = "Mehran WiFi Service - Admin Portal"
-admin.site.site_title = "Mehran WiFi Admin"
+admin.site.site_header = "HAM 3 NETWORK - Admin Portal"
+admin.site.site_title = "HAM 3 NETWORK Admin"
 admin.site.index_title = "Fiber ISP Infrastructure & Subscriber Management"
 
 from apps.accounts import views as account_views

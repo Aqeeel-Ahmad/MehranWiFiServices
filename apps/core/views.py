@@ -47,7 +47,7 @@ def contact_view(request):
             subject=subject or 'General Inquiry',
             message=message
         )
-        messages.success(request, "Thank you for reaching out! Our Mehran WiFi team has received your message and will get back to you shortly.")
+        messages.success(request, "Thank you for reaching out! Our HAM 3 NETWORK team has received your message and will get back to you shortly.")
         return redirect('contact')
 
     return render(request, 'core/contact.html')
@@ -75,7 +75,7 @@ def submit_feedback_view(request):
             message=message,
             is_approved=True
         )
-        messages.success(request, "Thank you for your valuable feedback! We appreciate your trust in Mehran WiFi Service.")
+        messages.success(request, "Thank you for your valuable feedback! We appreciate your trust in HAM 3 NETWORK.")
         return redirect(request.META.get('HTTP_REFERER', 'home') + '#feedback-section')
 
     return redirect('home')

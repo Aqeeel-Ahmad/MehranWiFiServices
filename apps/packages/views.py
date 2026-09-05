@@ -101,7 +101,7 @@ def order_package_wizard_view(request):
                 subscription=subscription,
                 amount=pkg_price,
                 payment_method='EasyPaisa',
-                easypaisa_number='03454524086',
+                easypaisa_number='03452524086',
                 sender_number=sender_number or getattr(request.user.profile, 'phone_number', ''),
                 transaction_id=transaction_id,
                 payment_screenshot=screenshot,

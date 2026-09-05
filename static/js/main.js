@@ -1,5 +1,5 @@
 /**
- * Mehran WiFi Service - Main Frontend Logic
+ * HAM 3 NETWORK - Main Frontend Logic
  */
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Navbar scroll effect
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2. EasyPaisa Copy Number Helper
   window.copyEasyPaisaNumber = function(text, btnElement) {
-    if (!text) text = '03454524086';
+    if (!text) text = '03452524086';
     navigator.clipboard.writeText(text).then(() => {
       const originalHtml = btnElement ? btnElement.innerHTML : null;
       if (btnElement) {

@@ -53,7 +53,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             # Send notification
             Notification.objects.create(
                 user=user,
-                title="👋 Welcome to Mehran WiFi Service!",
+                title="👋 Welcome to HAM 3 NETWORK!",
                 message="Your account has been created. Explore our fiber internet packages to get connected.",
                 link="/packages/"
             )

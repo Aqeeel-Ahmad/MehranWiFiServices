@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Sign Out | Mehran WiFi Service{% endblock %}
+{% block title %}Sign Out | HAM 3 NETWORK{% endblock %}
 
 {% block content %}
 <div class="position-relative min-vh-80 d-flex align-items-center py-5">
@@ -11,9 +11,9 @@
     <div class="row justify-content-center">
       <div class="col-md-6 col-lg-5">
         <div class="glass-panel p-4 p-md-5 border-cyan text-center anim-fiber-glow">
-          <img src="{% static 'images/logo.svg' %}" alt="Mehran WiFi Service" style="height: 52px;" class="mb-3">
+          <img src="{% static 'images/logo.svg' %}" alt="HAM 3 NETWORK" style="height: 52px;" class="mb-3">
           <h3 class="text-light fw-bold mb-2">Sign Out</h3>
-          <p class="text-secondary mb-4">Are you sure you want to sign out of your Mehran WiFi subscriber account?</p>
+          <p class="text-secondary mb-4">Are you sure you want to sign out of your HAM 3 NETWORK subscriber account?</p>
 
           <form method="POST" action="{% url 'account_logout' %}">
             {% csrf_token %}

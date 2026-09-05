@@ -55,7 +55,7 @@ class Command(BaseCommand):
                 'speed_mbps': 2,
                 'price': Decimal('560.00'),
                 'description': 'Design your own optical fiber package from 2 Mbps up to 30 Mbps with instant monthly pricing.',
-                'features': 'Flexible 2 Mbps to 30 Mbps Bandwidth\nInstant Dynamic Pricing (Rs. 400 + Rs. 80/Mbps)\nEasyPaisa Instant Activation\nMonthly Renewal on 8th of Next Month\nDedicated Mehran NOC Support',
+                'features': 'Flexible 2 Mbps to 30 Mbps Bandwidth\nInstant Dynamic Pricing (Rs. 400 + Rs. 80/Mbps)\nEasyPaisa Instant Activation\nMonthly Renewal on 8th of Next Month\nDedicated HAM 3 NOC Support',
                 'is_featured': False,
                 'is_custom': True,
                 'display_order': 5,
@@ -85,8 +85,8 @@ class Command(BaseCommand):
                 last_name='Manager'
             )
             profile, _ = UserProfile.objects.get_or_create(user=admin_user)
-            profile.phone_number = '03454524086'
-            profile.whatsapp_number = '03454524086'
+            profile.phone_number = '03452524086'
+            profile.whatsapp_number = '03452524086'
             profile.address = 'Main Optical Fiber Hub, Mehran City'
             profile.save()
             self.stdout.write(self.style.SUCCESS("Created admin user: admin / adminpassword"))
