@@ -74,8 +74,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mehran_wifi.wsgi.application'
 
-# Database Configuration (Serverless / Read-Only Safe)
-if 'VERCEL' in os.environ:
+# Database Configuration (Supports persistent PostgreSQL via DATABASE_URL / POSTGRES_URL, or SQLite)
+DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('POSTGRES_URL')
+
+if DATABASE_URL:
+    try:
+        import dj_database_url
+        DATABASES = {
+            'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
+        }
+    except Exception:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+elif 'VERCEL' in os.environ:
     tmp_db = Path('/tmp/db.sqlite3')
     orig_db = BASE_DIR / 'db.sqlite3'
     if not tmp_db.exists() and orig_db.exists():
@@ -84,15 +99,20 @@ if 'VERCEL' in os.environ:
         except Exception:
             pass
     DB_PATH = tmp_db if tmp_db.exists() else orig_db
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': DB_PATH,
+        }
+    }
 else:
     DB_PATH = BASE_DIR / 'db.sqlite3'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DB_PATH,
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': DB_PATH,
+        }
     }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
